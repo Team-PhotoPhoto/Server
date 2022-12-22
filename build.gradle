@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.0'
+    id 'org.springframework.boot' version '2.4.1'
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -20,9 +20,27 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.0') {
+        exclude module:'junit-platform-commons'
+    }
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:loambok'
+    implementation('org.projectlombok:lombok')
+    testImplementation('org.projectlombok:lombok')
+    testAnnotationProcessor('org.projectlombok:lombok')
+
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('com.h2database:h2')
+
+    implementation('org.springframework.boot:spring-boot-starter-oauth2-client') // 권한 관련
+    implementation('org.springframework.session:spring-session-jdbc') // 권한 관련
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
