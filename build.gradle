@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.hjin'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '19'
+sourceCompatibility = 17
 
 configurations {
     compileOnly {
@@ -24,13 +24,21 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
 
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.0') {
+//    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.0') {
+//        exclude module:'junit-platform-commons'
+//    }
+//    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+
+
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.1") {
         exclude module:'junit-platform-commons'
     }
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-engine:1.5.1")
+    testRuntimeOnly("org.junit.platform:junit-platform-commons:1.5.1")
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:loambok'
+    annotationProcessor 'org.projectlombok:lombok'
     implementation('org.projectlombok:lombok')
     testImplementation('org.projectlombok:lombok')
     testAnnotationProcessor('org.projectlombok:lombok')
@@ -48,3 +56,4 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_15
