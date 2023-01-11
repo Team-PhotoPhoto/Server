@@ -1,4 +1,4 @@
-package com.hjin.photophoto.web.dto;
+package com.hjin.photophoto.web.posts.dto;
 
 import com.hjin.photophoto.domain.posts.Posts;
 import lombok.Builder;
@@ -7,26 +7,26 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PostsSaveRequestDto {
+public class PostsSaveRequest {
 
     private String title;
     private String comments;
     private String imageUrl;
     private String senderName;
-    private String receiverUserId;
-    private int isRead;
-    private int isOpened;
+    private Long receiverUserId;
+    private boolean read;
+    private boolean open;
 
     @Builder
-    public PostsSaveRequestDto(String title, String comments, String imageUrl,
-                               String senderName, String receiverUserId) {
+    public PostsSaveRequest(String title, String comments, String imageUrl,
+                            String senderName, Long receiverUserId) {
         this.title = title;
         this.comments = comments;
         this.imageUrl = imageUrl;
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
-        this.isRead = 0;
-        this.isOpened = 0;
+        this.read = false;
+        this.open = false;
     }
 
     public Posts toEntity() {
@@ -36,8 +36,8 @@ public class PostsSaveRequestDto {
                 .imageUrl(imageUrl)
                 .senderName(senderName)
                 .receiverUserId(receiverUserId)
-                .isRead(isRead)
-                .isOpened(isOpened)
+                .read(read)
+                .open(open)
                 .build();
 
     }

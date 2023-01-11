@@ -17,8 +17,8 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //PK 생성 규칙, auto increment
     private Long userId;
 
-    @Column(length = 200, nullable = false)
-    private String socialUserId;
+    @Column(unique = true, nullable = false)
+    private Long authId;
 
     @Column(length = 30, nullable = false)
     private String nickname;
@@ -33,28 +33,33 @@ public class User extends BaseTimeEntity {
     private int frameType;
 
     @Column(length = 100, nullable = false)
-    private String email_auth;
-
-    @Column(length = 100, nullable = false)
     private String email_noti;
 
     @Column(nullable = false)
-    private boolean isNoti;
-
+    private boolean noti;
 
     @Builder        // 생성자
-    public User(Long userId, String socialUserId, String nickname, String imageUrl,
-                 int wallType, int frameType,
-                 String email_auth, String email_noti, boolean isNoti) {
+    public User(Long userId, Long authId, String nickname, String imageUrl,
+                 int wallType, int frameType,  String email_noti,
+                boolean noti) {
         this.userId = userId;
-        this.socialUserId = socialUserId;
+        this.authId = authId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
         this.wallType = wallType;
         this.frameType = frameType;
-        this.email_auth = email_auth;
         this.email_noti = email_noti;
-        this.isNoti = isNoti;
+        this.noti = noti;
+    }
+
+    public void update(String imageUrl, String nickname, int wallType,
+                       int frameType,String email_noti, boolean noti) {
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
+        this.wallType = wallType;
+        this.frameType = frameType;
+        this.email_noti = email_noti;
+        this.noti = noti;
     }
 }
 

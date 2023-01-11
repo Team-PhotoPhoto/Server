@@ -1,16 +1,16 @@
-package com.hjin.photophoto.web.dto;
+package com.hjin.photophoto.web.posts.dto;
 
 import com.hjin.photophoto.domain.posts.Posts;
 import java.time.LocalDateTime;
 
-public class GalleryResponseDto {
+public class GalleryResponse {
 
 
     private Long postId;
     private String imageUrl;
     private LocalDateTime createdDate;
 
-    public GalleryResponseDto(Posts entity) {
+    public GalleryResponse(Posts entity) {
         this.postId = entity.getPostId();
         this.imageUrl = entity.getImageUrl();
         this.createdDate = entity.getCreatedDate();

@@ -2,7 +2,6 @@ package com.hjin.photophoto.domain.posts;
 
 
 import com.hjin.photophoto.domain.BaseTimeEntity;
-import com.hjin.photophoto.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,31 +29,33 @@ public class Posts extends BaseTimeEntity {
     @Column(length = 30, nullable = false)
     private String senderName;
 
-    @ManyToOne
-    @JoinColumn(name = "receiverUserId")
     @Column(nullable = false)
-    private User user;
+    private Long receiverUserId;
 
     @Column(nullable = false)
-    private boolean isRead;
+    private boolean read;
 
     @Column(columnDefinition = "TINYINT(1)", nullable = false)
-    private boolean isOpened;
+    private boolean open;
 
     @Builder        // 생성자
-    public Posts(String title, String comments, String imageUrl,
-                 String senderName, User user,
-                 boolean isRead, boolean isOpened) {
+    public Posts(Long postId, String title, String comments, String imageUrl,
+                 String senderName, Long receiverUserId,
+                 boolean read, boolean open) {
+        this.postId = postId;
         this.title = title;
         this.comments = comments;
         this.imageUrl = imageUrl;
         this.senderName = senderName;
-        this.user = user;
-        this.isRead = isRead;
-        this.isOpened = isOpened;
+        this.receiverUserId = receiverUserId;
+        this.read = read;
+        this.open = open;
     }
 
-    public void update(boolean isOpened) {
-        this.isOpened = isOpened;
+    public void updateOpen(boolean open) {
+        this.open = open;
+    }
+    public void updateRead(boolean read) {
+        this.read = read;
     }
 }

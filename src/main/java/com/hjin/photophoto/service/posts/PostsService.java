@@ -2,7 +2,7 @@ package com.hjin.photophoto.service.posts;
 
 import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
-import com.hjin.photophoto.web.dto.*;
+import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,35 +16,66 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto) {
+    public Long save(PostsSaveRequest requestDto) {
         return postsRepository.save(requestDto.toEntity())
                 .getPostId();
     }
 
     @Transactional
-    public Long update(Long postId, PostsUpdateRequestDto requestDto) {
+    public Long updateOpen(Long postId) {
         // JPA: 트랜젝션 시작 후 변경 사항 모두 DB에 자동 저장(Dirty Checking)
         Posts posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
+                .orElseThrow(() -> new IllegalArgumentException
+                        ("해당 포스트가 없습니다. postId = " + postId));
 
         // 데이터 값 변경
-        posts.update(requestDto.getIsOpened());
-
+        posts.updateOpen(true);
         return postId;
     }
 
-    public PostsResponseDto findByPostId (Long postId) {
-        Posts entity = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
+    @Transactional
+    public void delete (Long postId) {
+        Posts posts = postsRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. postId = " + postId));
 
-        return new PostsResponseDto(entity);
+        postsRepository.delete(posts);
+    }
+
+    @Transactional
+    public Long updateRead(Long postId) {
+        Posts posts = postsRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException
+                        ("해당 포스트가 없습니다. postId = " + postId));
+
+        posts.updateOpen(true);
+        return postId;
+
+
+    }
+
+    @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
+    public PostsResponse findByPostId(Long postId) {
+        Posts entity = postsRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + postId));
+
+        return new PostsResponse(entity);
+
     }
 
     // userId로 찾기, inbox
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
-    public List<InboxResponseDto> findAllByUserId(String receiverUserId) {
-        return postsRepository.findAllByUserIdDesc(receiverUserId).stream()
-                .map(InboxResponseDto::new)
+    public List<InboxResponse> findAllByUserId(Long receiverUserId) {
+        return postsRepository.findPostsByReceiverUserOrderByCreatedDateDesc(receiverUserId).stream()
+                .map(InboxResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    // userId로 찾기, gallery(isOpened == true)
+    @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
+    public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId) {
+        return postsRepository
+                .findPostsByReceiverUserIdAndOpenOrderByCreatedDateDesc(receiverUserId, true).stream()
+                .map(GalleryResponse::new)
                 .collect(Collectors.toList());
     }
 

@@ -1,22 +1,22 @@
-package com.hjin.photophoto.web.dto;
+package com.hjin.photophoto.web.posts.dto;
 
 import com.hjin.photophoto.domain.posts.Posts;
 
 import java.time.LocalDateTime;
 
-public class InboxResponseDto {
+public class InboxResponse {
 
     private Long postId;
     private String title;
     private String senderName;
-    private int isRead;
+    private boolean read;
     private LocalDateTime createdDate;
 
-    public InboxResponseDto(Posts entity) {
+    public InboxResponse(Posts entity) {
         this.postId = entity.getPostId();
         this.title = entity.getTitle();
         this.senderName = entity.getSenderName();
-        this.isRead = entity.getIsRead();
+        this.read = entity.isRead();
         this.createdDate = entity.getCreatedDate();
     }
 }
