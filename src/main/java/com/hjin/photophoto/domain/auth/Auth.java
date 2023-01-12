@@ -15,20 +15,22 @@ import java.time.LocalDateTime;
 @Entity
 public class Auth extends BaseTimeEntity {
 
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "auth_id")
     private Long authId;
 
-    @Column(length = 400, nullable = false)
+    @Column(length = 400, nullable = false, name = "password")
     private String password;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, name = "social_user_id")
     private String socialUserId;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, name = "email_auth")
     private String email_auth;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "role")
     private Role role;
 
 

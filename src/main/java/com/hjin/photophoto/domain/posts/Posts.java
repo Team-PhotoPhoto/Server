@@ -15,27 +15,28 @@ public class Posts extends BaseTimeEntity {
 
     @Id     //PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //PK 생성 규칙, auto increment
+    @Column(name = "post_id")
     private Long postId;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50, nullable = false, name = "title")
     private String title;
 
-    @Column(length = 300, nullable = false)
+    @Column(length = 300, nullable = false, name = "comments")
     private String comments;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200, nullable = false, name = "image_url")
     private String imageUrl;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, name = "sender_name")
     private String senderName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "receiver_user_id")
     private Long receiverUserId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "read")
     private boolean read;
 
-    @Column(columnDefinition = "TINYINT(1)", nullable = false)
+    @Column(columnDefinition = "TINYINT(1)", nullable = false, name = "open")
     private boolean open;
 
     @Builder        // 생성자

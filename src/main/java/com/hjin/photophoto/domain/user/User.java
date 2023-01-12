@@ -15,27 +15,28 @@ public class User extends BaseTimeEntity {
 
     @Id     //PK
     @GeneratedValue(strategy = GenerationType.IDENTITY)     //PK 생성 규칙, auto increment
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, name = "auth_id")
     private Long authId;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, nullable = false, name = "nickname")
     private String nickname;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200, nullable = false, name = "image_url")
     private String imageUrl;
 
-    @Column(columnDefinition = "TINYINT(2)", nullable = false)
+    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "wall_type")
     private int wallType;
 
-    @Column(columnDefinition = "TINYINT(2)", nullable = false)
+    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "frame_type")
     private int frameType;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100, nullable = false, name = "email_noti")
     private String email_noti;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "noti")
     private boolean noti;
 
     @Builder        // 생성자

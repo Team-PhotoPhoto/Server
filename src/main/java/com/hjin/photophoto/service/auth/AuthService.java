@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AuthService {
 
-    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final AuthRepository authRepository;
