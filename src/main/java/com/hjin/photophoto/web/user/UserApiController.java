@@ -20,7 +20,7 @@ public class UserApiController {
         return userService.save(requestDto);
     }
 
-    @PatchMapping("/profile/{userId}")
+    @PutMapping ("/profile/{userId}")
     public Long update(@PathVariable Long userId, @RequestBody UserUpdateRequest requestDto) {
         return userService.update(userId, requestDto);
     }

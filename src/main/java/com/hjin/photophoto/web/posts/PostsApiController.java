@@ -21,7 +21,7 @@ public class PostsApiController {
         return postsService.save(requestDto);
     }
 
-    @PatchMapping("/post/{postId}")
+    @PutMapping("/post/{postId}")
     public Long update(@PathVariable Long postId) {
         return postsService.updateOpen(postId);
     }
