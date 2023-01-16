@@ -1,9 +1,13 @@
 package com.hjin.photophoto.service.posts;
 
+import com.hjin.photophoto.domain.PostsImg.PostsImg;
+import com.hjin.photophoto.domain.PostsImg.PostsImgRepository;
 import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.web.posts.dto.*;
+import com.hjin.photophoto.web.subjects.dto.SubjectsRespoonse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +18,23 @@ import java.util.stream.Collectors;
 @Service
 public class PostsService {
     private final PostsRepository postsRepository;
+    private final PostsImgRepository postsImgRepository;
 
     @Transactional
     public Long save(PostsSaveRequest requestDto) {
+        // PostImg 에서 삭제
+        Posts posts = postsRepository.findById(requestDto.getPostId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글의 이미지가 없습니다. postId = " + requestDto.getPostId()));
+
+        postsRepository.delete(posts);
+
         return postsRepository.save(requestDto.toEntity())
+                .getPostId();
+    }
+
+    @Transactional
+    public Long uploadImage() {
+        return postsImgRepository.save(PostsImg.builder().build())
                 .getPostId();
     }
 
@@ -64,17 +81,19 @@ public class PostsService {
 
     // userId로 찾기, inbox
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
-    public List<InboxResponse> findAllByUserId(Long receiverUserId) {
-        return postsRepository.findPostsByReceiverUserOrderByCreatedDateDesc(receiverUserId).stream()
+    public List<InboxResponse> findAllByUserId(Long receiverUserId, Pageable pageable) {
+        return postsRepository.findPostsByReceiverUserIdOrderByCreatedDateDesc(receiverUserId, pageable)
+                .stream()
                 .map(InboxResponse::new)
                 .collect(Collectors.toList());
     }
 
     // userId로 찾기, gallery(isOpened == true)
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
-    public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId) {
+    public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId, Pageable pageable) {
         return postsRepository
-                .findPostsByReceiverUserIdAndOpenOrderByCreatedDateDesc(receiverUserId, true).stream()
+                .findPostsByReceiverUserIdAndOpenOrderByCreatedDateDesc(receiverUserId, true, pageable)
+                .stream()
                 .map(GalleryResponse::new)
                 .collect(Collectors.toList());
     }

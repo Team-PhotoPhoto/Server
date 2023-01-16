@@ -1,0 +1,39 @@
+{{>layout/header}}
+
+<h1>닉네임 입력</h1>
+
+<div class="col-md-12">
+    <div class="col-md-4">
+        <div>
+            {{nickname}} <br>
+            <a href="/profile/me" class="btn btn-secondary active" role="button">프로필 수정</a><br>
+            주소: {{galleryUrl}}<br>
+            <a href="/inbox" class="btn btn-secondary active" role="button">수신함</a><br>
+            <a href="/posts/image" class="btn btn-secondary active" role="button">방명록 작성하기</a><br>
+        </div>
+
+        <div>
+            갤러리 가져오기 <br>
+            <!-- 목록 출력 영역 -->
+            <table class="table table-horizontal table-bordered">
+                <thead class="thead-strong">
+                <tr>
+                    <th>게시글번호</th>
+                    <th>이미지</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                {{#posts}}  <!-- posts 라는 List 를 순회합니다 -->
+                <tr>
+                    <td>{{porstId}}</td>
+                    <td>{{imageUrl}}</td>
+                </tr>
+                {{/posts}}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{{>layout/footer}}

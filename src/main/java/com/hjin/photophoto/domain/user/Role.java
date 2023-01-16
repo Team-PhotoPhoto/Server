@@ -1,4 +1,4 @@
-package com.hjin.photophoto.domain.auth;
+package com.hjin.photophoto.domain.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Role {
 
-    GUEST("ROLE_GUEST", "손님"),
+    JOIN("ROLE_JOIN", "닉네임 미입력 사용자"),
     USER("ROLE_USER", "일반 사용자");
 
     private final String key;

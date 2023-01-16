@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class Posts extends BaseTimeEntity {
 
     @Id     //PK
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     //PK 생성 규칙, auto increment
     @Column(name = "post_id")
     private Long postId;
 

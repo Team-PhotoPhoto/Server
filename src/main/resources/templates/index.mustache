@@ -1,0 +1,37 @@
+{{>layout/header}}
+
+<h1>포토포토</h1>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+                <a href="/oauth2/authorization/kakao" class="btn btn-secondary active" role="button">kakao Login</a>
+
+        </div>
+    </div>
+    <br>
+    <!-- 목록 출력 영역 -->
+<!--    <table class="table table-horizontal table-bordered">-->
+<!--        <thead class="thead-strong">-->
+<!--        <tr>-->
+<!--            <th>게시글번호</th>-->
+<!--            <th>제목</th>-->
+<!--            <th>작성자</th>-->
+<!--            <th>최종수정일</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody id="tbody">-->
+<!--        {{#posts}}  &lt;!&ndash; posts 라는 List 를 순회합니다 &ndash;&gt;-->
+<!--        <tr>-->
+<!--            <td>{{id}}</td>-->
+<!--            <td><a href="/posts/update/{{id}}">{{title}}</a></td> &lt;!&ndash; List 의 필드 사용 &ndash;&gt;-->
+<!--            <td>{{author}}</td>-->
+<!--            <td>{{modifiedDate}}</td>-->
+<!--        </tr>-->
+<!--        {{/posts}}-->
+<!--        </tbody>-->
+<!--    </table>-->
+</div>
+
+{{>layout/footer}}

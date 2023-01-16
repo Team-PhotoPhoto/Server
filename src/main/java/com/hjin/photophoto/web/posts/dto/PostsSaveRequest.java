@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostsSaveRequest {
 
+    private Long postId;
+
     private String title;
     private String comments;
     private String imageUrl;
@@ -18,8 +20,9 @@ public class PostsSaveRequest {
     private boolean open;
 
     @Builder
-    public PostsSaveRequest(String title, String comments, String imageUrl,
+    public PostsSaveRequest(Long postId, String title, String comments, String imageUrl,
                             String senderName, Long receiverUserId) {
+        this.postId = postId;
         this.title = title;
         this.comments = comments;
         this.imageUrl = imageUrl;
@@ -31,6 +34,7 @@ public class PostsSaveRequest {
 
     public Posts toEntity() {
         return Posts.builder()
+                .postId(postId)
                 .title(title)
                 .comments(comments)
                 .imageUrl(imageUrl)

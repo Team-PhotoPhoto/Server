@@ -1,7 +1,8 @@
 package com.hjin.photophoto.web.user.dto;
 
-import com.hjin.photophoto.domain.posts.Posts;
+import com.hjin.photophoto.domain.user.FrameType;
 import com.hjin.photophoto.domain.user.User;
+import com.hjin.photophoto.domain.user.WallType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,25 +12,23 @@ import lombok.NoArgsConstructor;
 public class UserSaveRequest {
 
     private String nickname;
-    private int wallType;
-    private int frameType;
-    private String email_noti;
+    private FrameType frameType;
+    private WallType wallType;
+    private String emailNoti;
 
     @Builder
-    public UserSaveRequest(String nickname, int wallType, int frameType,
-                           String email_noti) {
+    public UserSaveRequest(String nickname, FrameType frameType, String emailNoti) {
         this.nickname = nickname;
-        this.wallType = wallType;
         this.frameType = frameType;
-        this.email_noti = email_noti;
+        this.emailNoti = emailNoti;
     }
 
     public User toEntity() {
         return User.builder()
                 .nickname(nickname)
-                .wallType(wallType)
                 .frameType(frameType)
-                .email_noti(email_noti)
+                .wallType(wallType)
+                .emailNoti(emailNoti)
                 .build();
 
     }

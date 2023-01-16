@@ -1,33 +1,35 @@
 package com.hjin.photophoto.config.auth;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.hjin.photophoto.domain.user.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 
-@Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-public class SecurityConfig {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf().disable()
-                .authorizeRequests()
-                    .antMatchers("/user/**").authenticated() //접근 시 인증이 필요한 url 설정
-                    .anyRequest().permitAll() //위 url 빼고 전부 인가
+    private final CustomOAuth2UserService customOAuth2UserService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable().headers().frameOptions().disable()// h2콘솔 사용 용
                 .and()
-                .formLogin() //아이디 비번
-                    .loginPage("/signin") //로그인 필요할 때 redirect 시킬 페이지
-                    .loginProcessingUrl("/signinProc")//여기로 id,pw 주면 자동 로그인됨
-                    .defaultSuccessUrl("/") //로그인 성공 시 기본 url
-                    .failureUrl("/") //로그인 실패시 url
-                .and().build();
-    }
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+                    .requestCache().requestCache(new NullRequestCache()) //쿠키...?
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/posts/empty", "/logout", "/deleteaccount", "/posts/me").hasRole(Role.USER.name())    //USER 권한을 가진 사람만 이 api 사용 가능
+                    .antMatchers("/profile/signup").hasRole(Role.JOIN.name())    //JOIN 권한을 가진 사람만 이 api 사용 가능
+                    .anyRequest().permitAll()   //위에 설정된 url 이외 나머지들. 모두 허용
+                .and()
+                    .logout()
+                        .logoutSuccessUrl("/")
+                .and()
+                    .oauth2Login()
+                    .userInfoEndpoint()// 로그인 성공 이후 사용자 정보 가져올 때
+                    .userService(customOAuth2UserService); //소셜 로그인 성공 후 인터페이스 구현체 등록(ex. sns에서 가져오고 싶은 사용자 정보 기능 명시 가능
     }
 }

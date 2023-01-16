@@ -18,49 +18,69 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(unique = true, nullable = false, name = "auth_id")
-    private Long authId;
+    @Column(length = 100, name = "social_user_id")
+    private String socialUserId;
 
-    @Column(length = 30, nullable = false, name = "nickname")
+    @Column(length = 30, name = "nickname")
     private String nickname;
 
-    @Column(length = 200, nullable = false, name = "image_url")
+    @Column(length = 200, name = "image_url")
     private String imageUrl;
 
-    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "wall_type")
-    private int wallType;
+//    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "wall_type")
+//    private int wallType;
 
-    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "frame_type")
-    private int frameType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "frameType")
+    private FrameType frameType;
 
-    @Column(length = 100, nullable = false, name = "email_noti")
-    private String email_noti;
 
-    @Column(nullable = false, name = "noti")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "wallType")
+    private WallType wallType;
+
+//    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "frame_type")
+//    private int frameType;
+
+    @Column(length = 100, nullable = false, name = "emailAuth")
+    private String emailAuth;
+    @Column(length = 100, name = "emailNoti")
+    private String emailNoti;
+
+    @Column(name = "noti")
     private boolean noti;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name = "role")
+    private Role role;
+
     @Builder        // 생성자
-    public User(Long userId, Long authId, String nickname, String imageUrl,
-                 int wallType, int frameType,  String email_noti,
-                boolean noti) {
+    public User(Long userId, String socialUserId, String nickname, String imageUrl,
+                FrameType frameType, WallType wallType, String  emailAuth, String emailNoti, boolean noti, Role role) {
         this.userId = userId;
-        this.authId = authId;
+        this.socialUserId = socialUserId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
-        this.wallType = wallType;
         this.frameType = frameType;
-        this.email_noti = email_noti;
+        this.wallType = wallType;
+        this.emailAuth = emailAuth;
+        this.emailNoti = emailNoti;
         this.noti = noti;
+        this.role = role;
     }
 
-    public void update(String imageUrl, String nickname, int wallType,
-                       int frameType,String email_noti, boolean noti) {
+    public void update(String imageUrl, String nickname, FrameType frameType, WallType wallType,String emailNoti, boolean noti) {
         this.nickname = nickname;
         this.imageUrl = imageUrl;
-        this.wallType = wallType;
         this.frameType = frameType;
-        this.email_noti = email_noti;
+        this.wallType = wallType;
+        this.emailNoti = emailNoti;
         this.noti = noti;
+        this.role = Role.USER;
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
     }
 }
 

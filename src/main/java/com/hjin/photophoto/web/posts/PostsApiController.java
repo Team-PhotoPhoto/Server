@@ -1,12 +1,17 @@
 package com.hjin.photophoto.web.posts;
 
+import com.hjin.photophoto.config.auth.LoginUser;
+import com.hjin.photophoto.config.auth.dto.SessionUser;
 import com.hjin.photophoto.domain.posts.Posts;
+import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.web.posts.dto.GalleryResponse;
 import com.hjin.photophoto.web.posts.dto.InboxResponse;
 import com.hjin.photophoto.web.posts.dto.PostsResponse;
 import com.hjin.photophoto.web.posts.dto.PostsSaveRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +25,12 @@ public class PostsApiController {
     public Long save(@RequestBody PostsSaveRequest requestDto) {
         return postsService.save(requestDto);
     }
+
+    @PostMapping("/posts/image")
+    public Long uploadImg() {
+        return postsService.uploadImage();
+    }
+
 
     @PutMapping("/post/{postId}")
     public Long update(@PathVariable Long postId) {
@@ -38,15 +49,16 @@ public class PostsApiController {
         return postId;
     }
 
-    @GetMapping("/inbox/{userId}")
-    public List<InboxResponse> findAllByUserId(@PathVariable Long userId) {
-        return postsService.findAllByUserId(userId);
+    @GetMapping("/inbox")
+    public List<InboxResponse> findAllByUserId(Pageable pageable, @LoginUser SessionUser sessionUser) {
+        return postsService.findAllByUserId(sessionUser.getUserId(), pageable);
     }
 
     @GetMapping("/gallery/{userId}")
-    public List<GalleryResponse> findAllByUserIdOpen(@PathVariable Long userId) {
-        return postsService.findAllByUserIdOpen(userId);
+    public List<GalleryResponse> findAllByUserIdOpen(@PathVariable Long userId, Pageable pageable) {
+        return postsService.findAllByUserIdOpen(userId, pageable);
     }
+
 
 
 }
