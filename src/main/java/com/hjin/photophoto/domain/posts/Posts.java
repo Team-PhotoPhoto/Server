@@ -35,7 +35,7 @@ public class Posts extends BaseTimeEntity {
     @Column(nullable = false, name = "read")
     private boolean read;
 
-    @Column(columnDefinition = "TINYINT(1)", nullable = false, name = "open")
+    @Column(nullable = false, name = "open")
     private boolean open;
 
     @Builder        // 생성자

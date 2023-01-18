@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 public class GalleryResponse {
 
-
     private Long postId;
     private String imageUrl;
     private LocalDateTime createdDate;

@@ -21,9 +21,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-
     @Transactional
     public Long save(UserSaveRequest requestDto) {
         return userRepository.save(requestDto.toEntity())

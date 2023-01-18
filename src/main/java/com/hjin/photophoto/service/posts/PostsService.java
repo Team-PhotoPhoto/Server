@@ -1,11 +1,11 @@
 package com.hjin.photophoto.service.posts;
 
-import com.hjin.photophoto.domain.PostsImg.PostsImg;
-import com.hjin.photophoto.domain.PostsImg.PostsImgRepository;
+import com.hjin.photophoto.domain.postsImg.PostsImg;
+import com.hjin.photophoto.domain.postsImg.PostsImgRepository;
 import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
+import com.hjin.photophoto.domain.subjects.SubjectsRepository;
 import com.hjin.photophoto.web.posts.dto.*;
-import com.hjin.photophoto.web.subjects.dto.SubjectsRespoonse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,16 @@ import java.util.stream.Collectors;
 public class PostsService {
     private final PostsRepository postsRepository;
     private final PostsImgRepository postsImgRepository;
+
+    private final SubjectsRepository subjectRepository;
+
+    @Transactional(readOnly = true)
+    public List<SubjectsResponse> findAllSubjects() {
+        return subjectRepository.findAll()
+                .stream()
+                .map(SubjectsResponse::new)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public Long save(PostsSaveRequest requestDto) {

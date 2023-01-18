@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .requestCache().requestCache(new NullRequestCache()) //쿠키...?
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/posts/empty", "/logout", "/deleteaccount", "/posts/me").hasRole(Role.USER.name())    //USER 권한을 가진 사람만 이 api 사용 가능
                     .antMatchers("/profile/signup").hasRole(Role.JOIN.name())    //JOIN 권한을 가진 사람만 이 api 사용 가능
+                    .antMatchers("/inbox", "/gallery/me", "/profile/me").hasRole(Role.JOIN.name())
                     .anyRequest().permitAll()   //위에 설정된 url 이외 나머지들. 모두 허용
                 .and()
                     .logout()

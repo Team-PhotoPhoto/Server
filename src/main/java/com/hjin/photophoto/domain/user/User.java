@@ -18,17 +18,11 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(length = 100, name = "social_user_id")
-    private String socialUserId;
-
     @Column(length = 30, name = "nickname")
     private String nickname;
 
     @Column(length = 200, name = "image_url")
     private String imageUrl;
-
-//    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "wall_type")
-//    private int wallType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "frameType")
@@ -55,10 +49,9 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @Builder        // 생성자
-    public User(Long userId, String socialUserId, String nickname, String imageUrl,
+    public User(Long userId, String nickname, String imageUrl,
                 FrameType frameType, WallType wallType, String  emailAuth, String emailNoti, boolean noti, Role role) {
         this.userId = userId;
-        this.socialUserId = socialUserId;
         this.nickname = nickname;
         this.imageUrl = imageUrl;
         this.frameType = frameType;

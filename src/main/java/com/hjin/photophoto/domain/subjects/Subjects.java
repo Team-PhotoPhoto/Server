@@ -1,4 +1,4 @@
-package com.hjin.photophoto.domain.subject;
+package com.hjin.photophoto.domain.subjects;
 
 import com.hjin.photophoto.domain.BaseTimeEntity;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Subject extends BaseTimeEntity {
+public class Subjects extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_id")
@@ -20,7 +20,7 @@ public class Subject extends BaseTimeEntity {
     private String contents;
 
     @Builder
-    public Subject(Long subjectId, String contents) {
+    public Subjects(Long subjectId, String contents) {
         this.contents = contents;
         this.subjectId = subjectId;
     }

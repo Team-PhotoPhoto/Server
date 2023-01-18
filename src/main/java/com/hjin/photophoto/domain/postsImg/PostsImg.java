@@ -1,4 +1,4 @@
-package com.hjin.photophoto.domain.PostsImg;
+package com.hjin.photophoto.domain.postsImg;
 
 import com.hjin.photophoto.domain.BaseTimeEntity;
 import lombok.Builder;
