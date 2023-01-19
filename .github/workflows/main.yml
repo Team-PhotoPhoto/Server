@@ -17,7 +17,7 @@ jobs:
     - uses: actions/setup-java@v3
       with:
         distribution: temurin
-        java-version: 11    
+        java-version: 11      
         
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.3.3
@@ -37,4 +37,5 @@ jobs:
         SLACK_USERNAME: 배포 결과 알려 드림
         SLACK_COLOR: ${{ job.status }}
         SLACK_FOOTER: '이건 테스트 배포 입니다.'
+      if: always()
       
