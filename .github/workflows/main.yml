@@ -13,10 +13,28 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+       
+    - uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 11    
         
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.3.3
       
     - name: Gradle Test
-      run: gradle test
+      run: ./gradlew test
+    
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:        
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_TITLE: 빌드 결과
+        SLACK_MESSAGE: |
+          > 배포 상태: `${{ job.status }}`
+          > Git Commit 메세지: `${{ github.event.head_commit.message }}`
+        SLACK_USERNAME: 배포 결과 알려 드림
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_FOOTER: '이건 테스트 배포 입니다.'
       
