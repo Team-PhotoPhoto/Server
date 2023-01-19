@@ -10,9 +10,13 @@ import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.channels.AcceptPendingException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController     //json 변환 컨트롤러
@@ -51,13 +55,17 @@ public class PostsApiController {
 
     @DeleteMapping("/posts/{postId}")
     public Long deletePost(@PathVariable Long postId, @RequestParam Long receiverUserId,
-                       @LoginUser SessionUser sessionUser) {
+                           @LoginUser SessionUser sessionUser) {
+        //인터셉터
         User user = userRepository.findByUserId(sessionUser.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
 
-        if (receiverUserId != user.getUserId()) {
+        // Long: 2가지 타입(Long, long) null 일 수 있음 -> null pointer 예외
+        if (!Objects.equals(receiverUserId, user.getUserId())) {
             throw new IllegalArgumentException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
+//            throw new BadCredentialsException("");
+//            throw new AccessDeniedException("");
         } else {
             postsService.delete(postId);
             return postId;
@@ -65,12 +73,12 @@ public class PostsApiController {
     }
 
     @GetMapping("/post/{postId}")
-    public PostsResponse getPost (@PathVariable Long postId) {
+    public PostsResponse getPost(@PathVariable Long postId) {
 
         postsRepository.findPostsByPostId(postId)
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "햬당 포스트가 없습니다. postId = " + postId
-                        ));
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "햬당 포스트가 없습니다. postId = " + postId
+                ));
         postsService.updateRead(postId);
         return postsService.findByPostId(postId);
     }
@@ -90,7 +98,6 @@ public class PostsApiController {
                         ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
 
 
-
         return postsService.findAllByUserIdOpen(user.getUserId(), pageable);
     }
 
@@ -102,7 +109,6 @@ public class PostsApiController {
 
         return postsService.findAllByUserIdOpen(userId, pageable);
     }
-
 
 
 }
