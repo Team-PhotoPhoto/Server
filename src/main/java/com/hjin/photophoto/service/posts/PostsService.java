@@ -33,10 +33,10 @@ public class PostsService {
     @Transactional
     public Long save(PostsSaveRequest requestDto) {
         // PostImg 에서 삭제
-        Posts posts = postsRepository.findById(requestDto.getPostId())
+        PostsImg postsImg = postsImgRepository.findById(requestDto.getPostId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글의 이미지가 없습니다. postId = " + requestDto.getPostId()));
 
-        postsRepository.delete(posts);
+        postsImgRepository.delete(postsImg);
 
         return postsRepository.save(requestDto.toEntity())
                 .getPostId();
@@ -74,7 +74,7 @@ public class PostsService {
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 포스트가 없습니다. postId = " + postId));
 
-        posts.updateOpen(true);
+        posts.updateRead(true);
         return postId;
 
 

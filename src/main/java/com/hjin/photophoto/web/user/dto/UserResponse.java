@@ -4,7 +4,11 @@ import com.hjin.photophoto.domain.user.FrameType;
 import com.hjin.photophoto.domain.user.Role;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.WallType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter     //setter 생성x
+@NoArgsConstructor      //생성자 생성 -> Bean 주입
 public class UserResponse {
     private Long userId;
     private String imageUrl;

@@ -5,10 +5,8 @@ import com.hjin.photophoto.domain.user.Role;
 import com.hjin.photophoto.domain.user.WallType;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
 public class UserUpdateRequest {
 
     private String imageUrl;

@@ -1,7 +1,10 @@
 package com.hjin.photophoto.web.posts.dto;
 
 import com.hjin.photophoto.domain.subjects.Subjects;
+import lombok.Getter;
 
+
+@Getter
 public class SubjectsResponse {
 
     private Long subjectId;
