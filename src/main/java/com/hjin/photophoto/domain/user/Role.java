@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum Role {
 
     JOIN("ROLE_JOIN", "닉네임 미입력 사용자"),
-    USER("ROLE_USER", "일반 사용자");
+    USER("ROLE_USER", "일반 사용자"),
+    DELETED("ROLE_DELETED", "탈퇴한 사용자");
 
     private final String key;
     private final String title;

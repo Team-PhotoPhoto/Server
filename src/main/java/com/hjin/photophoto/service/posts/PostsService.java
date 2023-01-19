@@ -5,6 +5,7 @@ import com.hjin.photophoto.domain.postsImg.PostsImgRepository;
 import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.subjects.SubjectsRepository;
+import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
 public class PostsService {
     private final PostsRepository postsRepository;
     private final PostsImgRepository postsImgRepository;
-
     private final SubjectsRepository subjectRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<SubjectsResponse> findAllSubjects() {
@@ -63,7 +64,7 @@ public class PostsService {
     @Transactional
     public void delete (Long postId) {
         Posts posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. postId = " + postId));
+                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
 
         postsRepository.delete(posts);
     }
@@ -83,7 +84,7 @@ public class PostsService {
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public PostsResponse findByPostId(Long postId) {
         Posts entity = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + postId));
+                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId=" + postId));
 
         return new PostsResponse(entity);
 
@@ -92,6 +93,10 @@ public class PostsService {
     // userId로 찾기, inbox
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public List<InboxResponse> findAllByUserId(Long receiverUserId, Pageable pageable) {
+        userRepository.findByUserId(receiverUserId)
+                .orElseThrow(() -> new IllegalArgumentException
+                        ("해당 유저가 없습니다. userId = " + receiverUserId));
+
         return postsRepository.findPostsByReceiverUserIdOrderByCreatedDateDesc(receiverUserId, pageable)
                 .stream()
                 .map(InboxResponse::new)
@@ -101,6 +106,10 @@ public class PostsService {
     // userId로 찾기, gallery(isOpened == true)
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId, Pageable pageable) {
+        userRepository.findByUserId(receiverUserId)
+                .orElseThrow(() -> new IllegalArgumentException
+                        ("해당 유저가 없습니다. userId = " + receiverUserId));
+
         return postsRepository
                 .findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(receiverUserId, true, pageable)
                 .stream()

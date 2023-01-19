@@ -3,17 +3,14 @@ package com.hjin.photophoto.web.posts;
 import com.hjin.photophoto.config.auth.LoginUser;
 import com.hjin.photophoto.config.auth.dto.SessionUser;
 import com.hjin.photophoto.domain.posts.PostsRepository;
-import com.hjin.photophoto.domain.subjects.SubjectsRepository;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.channels.AcceptPendingException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
@@ -41,13 +38,15 @@ public class PostsApiController {
     }
 
     @PutMapping("/post/{postId}")
-    public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto, @LoginUser SessionUser sessionUser) {
+    public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto
+            , @LoginUser SessionUser sessionUser) throws AccessDeniedException {
+
         User user = userRepository.findByUserId(sessionUser.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
 
-        if (requestDto.getReceiverUserId() != user.getUserId()) {
-            throw new IllegalArgumentException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
+        if (!Objects.equals(requestDto.getReceiverUserId(), user.getUserId())) {
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
         } else {
             return postsService.updateOpen(postId);
         }
@@ -55,17 +54,14 @@ public class PostsApiController {
 
     @DeleteMapping("/posts/{postId}")
     public Long deletePost(@PathVariable Long postId, @RequestParam Long receiverUserId,
-                           @LoginUser SessionUser sessionUser) {
-        //인터셉터
+                           @LoginUser SessionUser sessionUser) throws AccessDeniedException {
         User user = userRepository.findByUserId(sessionUser.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
 
         // Long: 2가지 타입(Long, long) null 일 수 있음 -> null pointer 예외
         if (!Objects.equals(receiverUserId, user.getUserId())) {
-            throw new IllegalArgumentException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
-//            throw new BadCredentialsException("");
-//            throw new AccessDeniedException("");
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
         } else {
             postsService.delete(postId);
             return postId;
@@ -74,39 +70,35 @@ public class PostsApiController {
 
     @GetMapping("/post/{postId}")
     public PostsResponse getPost(@PathVariable Long postId) {
-
-        postsRepository.findPostsByPostId(postId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "햬당 포스트가 없습니다. postId = " + postId
-                ));
         postsService.updateRead(postId);
         return postsService.findByPostId(postId);
     }
 
 
     @GetMapping("/inbox")
-    public List<InboxResponse> getInbox(Pageable pageable, @LoginUser SessionUser sessionUser) {
-        return postsService.findAllByUserId(sessionUser.getUserId(), pageable);
+    public List<InboxResponse> getInbox(Pageable pageable, @LoginUser SessionUser sessionUser) throws AccessDeniedException {
+
+        User user = userRepository.findByUserId(sessionUser.getUserId())
+                .orElseThrow(() -> new AccessDeniedException
+                        ("접근 권한이 없습니다. userId = " + sessionUser.getUserId()));
+
+
+        return postsService.findAllByUserId(user.getUserId(), pageable);
     }
 
     @GetMapping("/gallery/me")
     public List<GalleryResponse> findMyGallery(
-            Pageable pageable, @LoginUser SessionUser sessionUser) {
+            Pageable pageable, @LoginUser SessionUser sessionUser) throws AccessDeniedException {
 
         User user = userRepository.findByUserId(sessionUser.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
-
+                .orElseThrow(() -> new AccessDeniedException
+                        ("접근 권한이 없습니다. userId = " + sessionUser.getUserId()));
 
         return postsService.findAllByUserIdOpen(user.getUserId(), pageable);
     }
 
     @GetMapping("/gallery/{userId}")
     public List<GalleryResponse> getOtherGallery(@PathVariable Long userId, Pageable pageable) {
-        userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + userId));
-
         return postsService.findAllByUserIdOpen(userId, pageable);
     }
 
