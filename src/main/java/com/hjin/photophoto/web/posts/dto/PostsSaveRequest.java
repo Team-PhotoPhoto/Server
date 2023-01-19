@@ -16,20 +16,21 @@ public class PostsSaveRequest {
     private String imageUrl;
     private String senderName;
     private Long receiverUserId;
-    private boolean read;
-    private boolean open;
+    private boolean readYn;
+    private boolean openYn;
+
 
     @Builder
     public PostsSaveRequest(Long postId, String title, String comments, String imageUrl,
-                            String senderName, Long receiverUserId) {
+                            String senderName, Long receiverUserId, Boolean readYn, Boolean openYn) {
         this.postId = postId;
         this.title = title;
         this.comments = comments;
         this.imageUrl = imageUrl;
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
-        this.read = false;
-        this.open = false;
+        this.readYn = readYn;
+        this.openYn = openYn;
     }
 
     public Posts toEntity() {
@@ -40,8 +41,8 @@ public class PostsSaveRequest {
                 .imageUrl(imageUrl)
                 .senderName(senderName)
                 .receiverUserId(receiverUserId)
-                .read(read)
-                .open(open)
+                .readYn(readYn)
+                .openYn(openYn)
                 .build();
 
     }

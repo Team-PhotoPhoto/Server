@@ -1,6 +1,7 @@
 package com.hjin.photophoto.web.user.dto;
 
 import com.hjin.photophoto.domain.user.FrameType;
+import com.hjin.photophoto.domain.user.Role;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.WallType;
 
@@ -12,6 +13,7 @@ public class UserResponse {
     private FrameType frameType;
     private String emailNoti;
     private boolean noti;
+    private Role role;
 
     public UserResponse(User entity) {
         this.userId = entity.getUserId();
@@ -21,5 +23,6 @@ public class UserResponse {
         this.frameType = entity.getFrameType();
         this.emailNoti = entity.getEmailNoti();
         this.noti = entity.isNoti();
+        this.role = entity.getRole();
     }
 }

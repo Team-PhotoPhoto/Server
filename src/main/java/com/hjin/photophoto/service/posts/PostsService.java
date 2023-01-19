@@ -102,7 +102,7 @@ public class PostsService {
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId, Pageable pageable) {
         return postsRepository
-                .findPostsByReceiverUserIdAndOpenOrderByCreatedDateDesc(receiverUserId, true, pageable)
+                .findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(receiverUserId, true, pageable)
                 .stream()
                 .map(GalleryResponse::new)
                 .collect(Collectors.toList());

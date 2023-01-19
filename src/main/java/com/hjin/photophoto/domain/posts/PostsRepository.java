@@ -10,7 +10,7 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
     Optional<Posts> findPostsByPostId(Long postId);
     Page<Posts> findPostsByReceiverUserIdOrderByCreatedDateDesc(Long receiverUserId, Pageable pageable);
-    Page<Posts> findPostsByReceiverUserIdAndOpenOrderByCreatedDateDesc(Long receiverUserId, boolean open, Pageable pageable);
+    Page<Posts> findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(Long receiverUserId, boolean openYn, Pageable pageable);
 }
 
 

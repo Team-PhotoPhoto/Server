@@ -9,14 +9,14 @@ public class InboxResponse {
     private Long postId;
     private String title;
     private String senderName;
-    private boolean read;
+    private boolean readYn;
     private LocalDateTime createdDate;
 
     public InboxResponse(Posts entity) {
         this.postId = entity.getPostId();
         this.title = entity.getTitle();
         this.senderName = entity.getSenderName();
-        this.read = entity.isRead();
+        this.readYn = entity.isReadYn();
         this.createdDate = entity.getCreatedDate();
     }
 }
