@@ -27,8 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .cors()
                 .and()
-                    .requestCache().requestCache(new NullRequestCache()) //쿠키...?
-                .and()
                     .authorizeRequests()
                     .antMatchers("/profile/signup").hasRole(Role.JOIN.name())    //JOIN 권한을 가진 사람만 이 api 사용 가능
                     .antMatchers("/inbox", "/gallery/me", "/profile/me").hasRole(Role.JOIN.name())
@@ -45,11 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedOrigin("*");
-        configuration.setAllowCredentials(true);
 
         configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.addAllowedHeader("*");

@@ -1,32 +1,32 @@
-//package com.hjin.photophoto.web;
-//
-//import com.hjin.photophoto.config.auth.LoginUser;
-//import com.hjin.photophoto.config.auth.dto.SessionUser;
-//import com.hjin.photophoto.domain.user.FrameType;
-//import com.hjin.photophoto.domain.user.Role;
-//import com.hjin.photophoto.domain.user.User;
-//import com.hjin.photophoto.domain.user.UserRepository;
-//import com.hjin.photophoto.service.posts.PostsService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//
-//import javax.servlet.http.HttpSession;
-//
-//@RequiredArgsConstructor
-//@Controller
-//public class IndexController {
-//    private final PostsService postsService;
-//    private final UserRepository userRepository;
-//
-//
-//    // 메인화면
-//    @GetMapping("/")
-//    public String index(@LoginUser SessionUser sessionUser){ // @LoginUser 만 사용하면 세션 정보 가져올 수 있다
-//
-//        //로그인 됨
+package com.hjin.photophoto.web;
+
+import com.hjin.photophoto.config.auth.LoginUser;
+import com.hjin.photophoto.config.auth.dto.SessionUser;
+import com.hjin.photophoto.domain.user.FrameType;
+import com.hjin.photophoto.domain.user.Role;
+import com.hjin.photophoto.domain.user.User;
+import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.service.posts.PostsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpSession;
+
+@RequiredArgsConstructor
+@Controller
+public class IndexController {
+    private final PostsService postsService;
+    private final UserRepository userRepository;
+
+
+    // 메인화면
+    @GetMapping("/")
+    public String index(@LoginUser SessionUser sessionUser){ // @LoginUser 만 사용하면 세션 정보 가져올 수 있다
+
+        //로그인 됨
 //        if (sessionUser != null) {
 //
 //            User user = userRepository.findByUserId(sessionUser.getUserId())
@@ -39,12 +39,12 @@
 //            }
 //            return "redirect:/gallery/me";
 //        }
-//
-//        // 로그인 x 유저
-//        return "main";
-//    }
-//
-//
+
+        // 로그인 x 유저
+        return "index";
+    }
+
+
 //    @GetMapping("/gallery/me")
 //    public String galleryMe(Model model, @LoginUser SessionUser sessionUser, Pageable pageable) {
 //
@@ -97,6 +97,6 @@
 ////        return "inbox";
 //        return "image-upload";
 //    }
-//
-//
-//}
+
+
+}
