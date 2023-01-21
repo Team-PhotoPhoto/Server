@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://ec2-54-180-92-252.ap-northeast-2.compute.amazonaws.com:8080")
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
