@@ -1,5 +1,6 @@
 package com.hjin.photophoto.config.auth;
 
+import com.hjin.photophoto.config.LoginHandler;
 import com.hjin.photophoto.domain.user.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final LoginHandler loginHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/")
                 .and()
                     .oauth2Login()
-                    .defaultSuccessUrl("/", true)
+                    .defaultSuccessUrl("/login/success", true)
+                    .successHandler(loginHandler)
                     .userInfoEndpoint()// 로그인 성공 이후 사용자 정보 가져올 때
                     .userService(customOAuth2UserService); //소셜 로그인 성공 후 인터페이스 구현체 등록(ex. sns에서 가져오고 싶은 사용자 정보 기능 명시 가능
     }
