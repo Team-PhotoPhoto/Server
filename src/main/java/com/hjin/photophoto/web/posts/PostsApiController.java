@@ -15,6 +15,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController     //json 변환 컨트롤러
 public class PostsApiController {

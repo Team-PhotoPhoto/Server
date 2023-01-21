@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
