@@ -11,12 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebConfig  implements WebMvcConfigurer {
-    private final LoginUserArgumentResolver loginUserArgumentResolver;
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
-        argumentResolvers.add(loginUserArgumentResolver);
-    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
