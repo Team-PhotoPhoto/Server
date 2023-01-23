@@ -6,12 +6,13 @@ import lombok.Getter;
 
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 @Getter
 public class OAuthAttributes {
 
-    private Map<String, Object> attributes;
-    private String nameAttributeKey;
-    private String emailAuth;
+    private final Map<String, Object> attributes;
+    private final String nameAttributeKey;
+    private final String emailAuth;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String emailAuth) {
@@ -26,10 +27,10 @@ public class OAuthAttributes {
 
 //        attributes.put("provider", registrationId);
         if("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
+            return ofNaver(attributes);
         }
         if("kakao".equals(registrationId)) {
-            return ofKakao("id", attributes);
+            return ofKakao(attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);
     }
@@ -43,24 +44,24 @@ public class OAuthAttributes {
                 .build();
     }
 
-    private static OAuthAttributes ofNaver (String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofNaver (Map<String, Object> attributes) {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
                 .emailAuth((String) response.get("email"))
                 .attributes(response)
-                .nameAttributeKey(userNameAttributeName)
+                .nameAttributeKey("id")
                 .build();
     }
 
-    private static OAuthAttributes ofKakao (String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofKakao (Map<String, Object> attributes) {
 
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
-        System.out.println(response.get("email"));
+//        System.out.println(response.get("email"));
         return OAuthAttributes.builder()
                 .emailAuth((String) response.get("email"))
                 .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
+                .nameAttributeKey("id")
                 .build();
     }
 
