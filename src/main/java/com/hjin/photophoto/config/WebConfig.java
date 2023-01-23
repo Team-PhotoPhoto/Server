@@ -1,6 +1,5 @@
 package com.hjin.photophoto.config;
 
-import com.hjin.photophoto.config.auth.LoginUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

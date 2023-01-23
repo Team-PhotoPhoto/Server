@@ -3,15 +3,12 @@ package com.hjin.photophoto.config.auth.jwt;
 import com.hjin.photophoto.config.auth.dto.JwtTokenResponse;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.io.Decoders;
 
-
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
@@ -19,9 +16,6 @@ import java.util.Date;
 public class JwtUtil {
 
     private final Key key;
-//    @Value("${jwt.secret}")
-//    private String SECRET;
-
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60; //access 60분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; //refresh 14일;
 
@@ -76,7 +70,6 @@ public class JwtUtil {
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않는 JWT 입니다.");
         } catch (IllegalArgumentException e) {
-            System.out.println(e);
             log.info("잘못된 JWT 입니다.");
         }
         return false;
@@ -91,22 +84,7 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
-//        log.info("getAllClaims token = {}", token);
-//        return Jwts.parser()
-//                .setSigningKey(SECRET)
-//                .parseClaimsJws(token)
-//                .getBody();
     }
-
-    /**
-     * Claim 에서 username 가져오기
-     */
-//    public String getEmailAuthFromToken(String token) {
-//        String emailAuth = String.valueOf(getAllClaims(token).get("emailAuth"));
-////        log.info("getUsernameFormToken subject = {}", emailAuth);
-//        return emailAuth;
-//    }
 
 
 }

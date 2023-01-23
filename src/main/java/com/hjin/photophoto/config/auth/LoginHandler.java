@@ -43,8 +43,6 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
         //authentication: 인증 토큰
 
         //login 성공한 사용자 목록
-        //oAuth2User.toString() 예시
-        //: Name: [2346930276], Granted Authorities: [[JOIN]], User Attributes: [{id=?, provider=kakao, email=?}]
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String email = (String) oAuth2User.getAttributes().get("email");
 
@@ -53,22 +51,11 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
                         ("해당 유저가 없습니다. emailAuth = " + email))
                 .getUserId();
 
-        System.out.println("email: " + email);
-
-
         // 토큰 발행
         JwtTokenResponse jwtToken = jwtUtil.generateToken(userId);
 
         // 리프레시 토큰 저장
         authService.saveRefreshToken(userId, jwtToken);
-
-        // refreshToken DB 저장
-        RefreshToken refreshToken = RefreshToken.builder()
-                                        .key(userId)
-                                        .token(jwtToken.getRefreshToken())
-                                        .build();
-        refreshTokenRepository.save(refreshToken);
-
 
         // 인증 코드를 담은 리다이렉트 uri 생성
         String url = makeRedirectUrl(jwtToken.getAccessToken(), jwtToken.getRefreshToken());
@@ -77,7 +64,6 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
             logger.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
             return;
         }
-        System.out.println("url: " + url);
         getRedirectStrategy().sendRedirect(request, response, url);
     }
 

@@ -1,9 +1,6 @@
 package com.hjin.photophoto.web.posts;
 
 import com.hjin.photophoto.config.auth.AuthService;
-import com.hjin.photophoto.config.auth.LoginUser;
-import com.hjin.photophoto.config.auth.dto.SessionUser;
-import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.service.posts.PostsService;

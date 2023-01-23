@@ -1,19 +1,15 @@
 package com.hjin.photophoto.web.user;
 
 import com.hjin.photophoto.config.auth.AuthService;
-import com.hjin.photophoto.config.auth.LoginUser;
-import com.hjin.photophoto.config.auth.dto.SessionUser;
 import com.hjin.photophoto.config.auth.jwt.JwtUtil;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.service.user.UserService;
 import com.hjin.photophoto.web.user.dto.UserResponse;
 import com.hjin.photophoto.web.user.dto.UserUpdateRequest;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
@@ -25,7 +21,6 @@ public class UserApiController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     private final AuthService authService;
 
     @GetMapping("/profile/signup")
