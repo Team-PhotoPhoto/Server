@@ -12,7 +12,6 @@ public class OAuthAttributes {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String emailAuth;
-    private Long userId;
 
     @Builder
     public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String emailAuth) {
@@ -22,13 +21,14 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        System.out.println("attributes");
-        System.out.println(attributes);
+//        System.out.println("attributes");
+//        System.out.println(attributes);
+
+//        attributes.put("provider", registrationId);
         if("naver".equals(registrationId)) {
             return ofNaver("id", attributes);
         }
         if("kakao".equals(registrationId)) {
-
             return ofKakao("id", attributes);
         }
         return ofGoogle(userNameAttributeName, attributes);

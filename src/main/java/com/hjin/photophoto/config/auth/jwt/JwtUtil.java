@@ -1,0 +1,112 @@
+package com.hjin.photophoto.config.auth.jwt;
+
+import com.hjin.photophoto.config.auth.dto.JwtTokenResponse;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import io.jsonwebtoken.io.Decoders;
+
+
+import java.security.Key;
+import java.util.Base64;
+import java.util.Date;
+
+@Slf4j
+@Component
+public class JwtUtil {
+
+    private final Key key;
+//    @Value("${jwt.secret}")
+//    private String SECRET;
+
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60; //access 60분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; //refresh 14일;
+
+//    SECRET: 256 bits (32 byte) 이상
+    public JwtUtil(@Value("${jwt.secret}") String SECRET) {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /**
+     * 토큰 생성
+     */
+    public JwtTokenResponse generateToken(Long userId) {
+        System.out.println("generate: ");
+        System.out.println(userId);
+        long now = System.currentTimeMillis();
+
+        String accessToken = Jwts.builder()
+                .claim("userId", userId)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(now + ACCESS_TOKEN_EXPIRE_TIME)) // 1시간
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+        // claim 없이 만료 시간만 담기
+        String refreshToken = Jwts.builder()
+                .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+        return JwtTokenResponse.builder()
+                .grantType("bearer")
+                .accessToken(accessToken)
+                .accessTokenExpiresIn(new Date(now + ACCESS_TOKEN_EXPIRE_TIME).getTime())
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+
+    /**
+     * 토큰 유효여부 확인
+     */
+    /* 토큰 유효성 검증, boolean */
+    public boolean isValidToken(String token) {
+        try{
+            getAllClaims(token);
+            return true;
+        } catch (MalformedJwtException e) {
+            log.info("JWT 서명의 형식이 잘못되었습니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원하지 않는 JWT 입니다.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
+            log.info("잘못된 JWT 입니다.");
+        }
+        return false;
+    }
+
+    /**
+     * 토큰의 Claim 디코딩
+     */
+    public Claims getAllClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+//        log.info("getAllClaims token = {}", token);
+//        return Jwts.parser()
+//                .setSigningKey(SECRET)
+//                .parseClaimsJws(token)
+//                .getBody();
+    }
+
+    /**
+     * Claim 에서 username 가져오기
+     */
+//    public String getEmailAuthFromToken(String token) {
+//        String emailAuth = String.valueOf(getAllClaims(token).get("emailAuth"));
+////        log.info("getUsernameFormToken subject = {}", emailAuth);
+//        return emailAuth;
+//    }
+
+
+}

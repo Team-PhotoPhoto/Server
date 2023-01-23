@@ -1,5 +1,6 @@
 package com.hjin.photophoto.web.posts;
 
+import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.config.auth.LoginUser;
 import com.hjin.photophoto.config.auth.dto.SessionUser;
 import com.hjin.photophoto.domain.posts.PostsRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +23,7 @@ import java.util.Objects;
 public class PostsApiController {
     private final PostsService postsService;
     private final UserRepository userRepository;
-    private final PostsRepository postsRepository;
+    private final AuthService authService;
 
     @GetMapping("/post/image/subjects")
     public List<SubjectsResponse> getAllSubjects() {
@@ -40,14 +42,12 @@ public class PostsApiController {
 
     @PutMapping("/post/{postId}")
     public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto
-            , @LoginUser SessionUser sessionUser) throws AccessDeniedException {
+            , HttpServletRequest request) throws AccessDeniedException {
 
-        User user = userRepository.findByUserId(sessionUser.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
-        if (!Objects.equals(requestDto.getReceiverUserId(), user.getUserId())) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
+        if (!Objects.equals(requestDto.getReceiverUserId(), userIdFromHeader)) {
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
         } else {
             return postsService.updateOpen(postId);
         }
@@ -55,14 +55,12 @@ public class PostsApiController {
 
     @DeleteMapping("/posts/{postId}")
     public Long deletePost(@PathVariable Long postId, @RequestParam Long receiverUserId,
-                           @LoginUser SessionUser sessionUser) throws AccessDeniedException {
-        User user = userRepository.findByUserId(sessionUser.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + sessionUser.getUserId()));
+                           HttpServletRequest request) throws AccessDeniedException {
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         // Long: 2가지 타입(Long, long) null 일 수 있음 -> null pointer 예외
-        if (!Objects.equals(receiverUserId, user.getUserId())) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + user.getUserId());
+        if (!Objects.equals(receiverUserId, userIdFromHeader)) {
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
         } else {
             postsService.delete(postId);
             return postId;
@@ -77,23 +75,25 @@ public class PostsApiController {
 
 
     @GetMapping("/inbox")
-    public List<InboxResponse> getInbox(Pageable pageable, @LoginUser SessionUser sessionUser) throws AccessDeniedException {
+    public List<InboxResponse> getInbox(Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
 
-        User user = userRepository.findByUserId(sessionUser.getUserId())
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
+
+        User user = userRepository.findByUserId(userIdFromHeader)
                 .orElseThrow(() -> new AccessDeniedException
-                        ("접근 권한이 없습니다. userId = " + sessionUser.getUserId()));
-
+                        ("접근 권한이 없습니다. userId = " + userIdFromHeader));
 
         return postsService.findAllByUserId(user.getUserId(), pageable);
     }
 
     @GetMapping("/gallery/me")
     public List<GalleryResponse> findMyGallery(
-            Pageable pageable, @LoginUser SessionUser sessionUser) throws AccessDeniedException {
+            Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
-        User user = userRepository.findByUserId(sessionUser.getUserId())
+        User user = userRepository.findByUserId(userIdFromHeader)
                 .orElseThrow(() -> new AccessDeniedException
-                        ("접근 권한이 없습니다. userId = " + sessionUser.getUserId()));
+                        ("접근 권한이 없습니다. userId = " + userIdFromHeader));
 
         return postsService.findAllByUserIdOpen(user.getUserId(), pageable);
     }
