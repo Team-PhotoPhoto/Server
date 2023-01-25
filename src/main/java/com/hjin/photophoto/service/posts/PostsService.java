@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 //import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 //import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -70,11 +72,15 @@ public class PostsService {
     }
 
     @Transactional
-    public void delete (Long postId) {
+    public void delete (Long postId, Long userIdFromHeader) throws AccessDeniedException {
         Posts posts = postsRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
 
-        postsRepository.delete(posts);
+        if(!Objects.equals(posts.getReceiverUserId(), userIdFromHeader)) {
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
+        } else {
+            postsRepository.delete(posts);
+        }
     }
 
     @Transactional

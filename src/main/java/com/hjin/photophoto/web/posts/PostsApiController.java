@@ -51,17 +51,10 @@ public class PostsApiController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public Long deletePost(@PathVariable Long postId, @RequestParam Long receiverUserId,
-                           HttpServletRequest request) throws AccessDeniedException {
+    public Long deletePost(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
-
-        // Long: 2가지 타입(Long, long) null 일 수 있음 -> null pointer 예외
-        if (!Objects.equals(receiverUserId, userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
-        } else {
-            postsService.delete(postId);
-            return postId;
-        }
+        postsService.delete(postId, userIdFromHeader);
+        return postId;
     }
 
     @GetMapping("/post/{postId}")
