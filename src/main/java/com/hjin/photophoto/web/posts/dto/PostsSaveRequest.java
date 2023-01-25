@@ -8,15 +8,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PostsSaveRequest {
 
-    private Long postId;
-
-    private String title;
-    private String comments;
-    private String imageUrl;
-    private String senderName;
-    private Long receiverUserId;
-    private boolean readYn;
-    private boolean openYn;
+    private final Long postId;
+    private final String title;
+    private final String comments;
+    private final String imageUrl;
+    private final String senderName;
+    private final Long receiverUserId;
+    private final boolean readYn;
+    private final boolean openYn;
 
 
     @Builder

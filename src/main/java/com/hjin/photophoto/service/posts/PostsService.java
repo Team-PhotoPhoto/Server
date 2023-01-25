@@ -84,15 +84,12 @@ public class PostsService {
     }
 
     @Transactional
-    public Long updateRead(Long postId) {
+    public void updateRead(Long postId) {
         Posts posts = postsRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 포스트가 없습니다. postId = " + postId));
 
         posts.updateRead(true);
-        return postId;
-
-
     }
 
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상

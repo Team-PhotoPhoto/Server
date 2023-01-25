@@ -37,6 +37,19 @@ public class PostsApiController {
         return postsService.save(requestDto);
     }
 
+    @PostMapping("/post/me")       //@RequestParam: request 파라미터 가져옴
+    public Long saveMyPost(@RequestBody PostsSaveRequest requestDto, HttpServletRequest request) throws AccessDeniedException {
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
+
+        // 나->나인가?
+        if (!Objects.equals(requestDto.getReceiverUserId(), userIdFromHeader)) {
+            throw new AccessDeniedException("해당 게시글을 저장할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
+        } else {
+            return postsService.save(requestDto);
+        }
+
+    }
+
     @PutMapping("/post/{postId}")
     public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto
             , HttpServletRequest request) throws AccessDeniedException {
