@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @RequiredArgsConstructor
+@Service
 public class ImageService {
 
 
