@@ -21,24 +21,24 @@ public class User extends BaseTimeEntity {
     @Column(length = 30, name = "nickname")
     private String nickname;
 
-    @Column(length = 200, name = "image_url")
+    @Column(length = 300, name = "image_url")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "frameType")
+    @Column(name = "frame_type")
     private FrameType frameType;
 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "wallType")
+    @Column(name = "wall_type")
     private WallType wallType;
 
 //    @Column(columnDefinition = "TINYINT(2)", nullable = false, name = "frame_type")
 //    private int frameType;
 
-    @Column(length = 100, nullable = false, name = "emailAuth")
+    @Column(length = 100, nullable = false, name = "email_auth")
     private String emailAuth;
-    @Column(length = 100, name = "emailNoti")
+    @Column(length = 100, name = "email_noti")
     private String emailNoti;
 
     @Column(name = "noti")
@@ -62,9 +62,8 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
-    public void update(String imageUrl, String nickname, FrameType frameType, WallType wallType,String emailNoti, boolean noti) {
+    public void update(String nickname, FrameType frameType, WallType wallType,String emailNoti, boolean noti) {
         this.nickname = nickname;
-        this.imageUrl = imageUrl;
         this.frameType = frameType;
         this.wallType = wallType;
         this.emailNoti = emailNoti;
@@ -74,6 +73,9 @@ public class User extends BaseTimeEntity {
 
     public void updateDelete() {
         this.role = Role.DELETED;
+    }
+    public void updateImage(Long userId) {
+        this.imageUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/" + userId + ".png";
     }
 
     public String getRoleKey() {

@@ -1,25 +1,20 @@
 package com.hjin.photophoto.service.posts;
 
+import com.amazonaws.HttpMethod;
 import com.hjin.photophoto.domain.postsImg.PostsImg;
 import com.hjin.photophoto.domain.postsImg.PostsImgRepository;
 import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.subjects.SubjectsRepository;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.service.ImageService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
-import software.amazon.awssdk.services.s3.model.S3Exception;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
-
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +27,12 @@ public class PostsService {
     private final PostsImgRepository postsImgRepository;
     private final SubjectsRepository subjectRepository;
     private final UserRepository userRepository;
+    private final ImageService imageService;
+
+    @Transactional
+    public String getPostUploadUrl(Long postId, String type) throws IOException {
+        return imageService.getSingedUrl(2, type, postId, HttpMethod.PUT);
+    }
 
     @Transactional(readOnly = true)
     public List<SubjectsResponse> findAllSubjects() {

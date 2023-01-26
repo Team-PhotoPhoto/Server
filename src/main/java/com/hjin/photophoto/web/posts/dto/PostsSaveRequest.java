@@ -11,7 +11,8 @@ public class PostsSaveRequest {
     private final Long postId;
     private final String title;
     private final String comments;
-    private final String imageUrl;
+    private final String thumbnailUrl;
+    private final String originUrl;
     private final String senderName;
     private final Long receiverUserId;
     private final boolean readYn;
@@ -19,12 +20,13 @@ public class PostsSaveRequest {
 
 
     @Builder
-    public PostsSaveRequest(Long postId, String title, String comments, String imageUrl,
+    public PostsSaveRequest(Long postId, String title, String comments,
                             String senderName, Long receiverUserId, Boolean readYn, Boolean openYn) {
         this.postId = postId;
         this.title = title;
         this.comments = comments;
-        this.imageUrl = imageUrl;
+        this.thumbnailUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/thumbnail/" + postId + ".png";
+        this.originUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/origin/" + postId + ".png";
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
         this.readYn = readYn;
@@ -36,7 +38,8 @@ public class PostsSaveRequest {
                 .postId(postId)
                 .title(title)
                 .comments(comments)
-                .imageUrl(imageUrl)
+                .thumbnailUrl(thumbnailUrl)
+                .originUrl(originUrl)
                 .senderName(senderName)
                 .receiverUserId(receiverUserId)
                 .readYn(readYn)

@@ -12,7 +12,8 @@ public class PostsResponse {
     private Long postId;
     private String title;
     private String comments;
-    private String imageUrl;
+    private String thumbnailUrl;
+    private String originUrl;
     private String senderName;
     private Long receiverUserId;
     private LocalDateTime createdDate;
@@ -21,7 +22,8 @@ public class PostsResponse {
         this.postId = entity.getPostId();
         this.title = entity.getTitle();
         this.comments = entity.getComments();
-        this.imageUrl = entity.getImageUrl();
+        this.thumbnailUrl = entity.getThumbnailUrl();
+        this.originUrl = entity.getOriginUrl();
         this.senderName = entity.getSenderName();
         this.receiverUserId = entity.getReceiverUserId();
         this.createdDate = entity.getCreatedDate();

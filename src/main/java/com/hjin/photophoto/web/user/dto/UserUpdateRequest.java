@@ -9,7 +9,6 @@ import lombok.Getter;
 @Getter
 public class UserUpdateRequest {
 
-    private String imageUrl;
     private String nickname;
     private FrameType frameType;
     private WallType wallType;
@@ -18,9 +17,8 @@ public class UserUpdateRequest {
     private Role role;
 
     @Builder
-    public UserUpdateRequest(String imageUrl, String nickname, FrameType frameType, WallType wallType,
+    public UserUpdateRequest(String nickname, FrameType frameType, WallType wallType,
                              String emailNoti, boolean noti) {
-        this.imageUrl = imageUrl;
         this.nickname = nickname;
         this.frameType = frameType;
         this.wallType = wallType;

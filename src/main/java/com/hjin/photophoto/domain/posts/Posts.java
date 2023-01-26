@@ -23,8 +23,10 @@ public class Posts extends BaseTimeEntity {
     @Column(length = 300, nullable = false, name = "comments")
     private String comments;
 
-    @Column(length = 200, nullable = false, name = "image_url")
-    private String imageUrl;
+    @Column(length = 300, nullable = false, name = "thumbnail_url")
+    private String thumbnailUrl;
+    @Column(length = 300, nullable = false, name = "origin_url")
+    private String originUrl;
 
     @Column(length = 30, nullable = false, name = "sender_name")
     private String senderName;
@@ -39,13 +41,14 @@ public class Posts extends BaseTimeEntity {
     private boolean openYn;
 
     @Builder        // 생성자
-    public Posts(Long postId, String title, String comments, String imageUrl,
+    public Posts(Long postId, String title, String comments, String thumbnailUrl, String originUrl,
                  String senderName, Long receiverUserId,
                  boolean readYn, boolean openYn) {
         this.postId = postId;
         this.title = title;
         this.comments = comments;
-        this.imageUrl = imageUrl;
+        this.thumbnailUrl = thumbnailUrl;
+        this.originUrl = originUrl;
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
         this.readYn = readYn;

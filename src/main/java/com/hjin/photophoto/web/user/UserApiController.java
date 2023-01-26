@@ -1,7 +1,6 @@
 package com.hjin.photophoto.web.user;
 
 import com.hjin.photophoto.config.auth.AuthService;
-import com.hjin.photophoto.config.auth.jwt.JwtUtil;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.service.user.UserService;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
@@ -39,13 +39,19 @@ public class UserApiController {
     @GetMapping("/profile/me")
     public UserResponse getMyProfile(HttpServletRequest request) throws AccessDeniedException {
         Long userId = authService.getUserIdFromHeader(request);
-        System.out.println(">>>>>> profile.me: " + userId);
+//        System.out.println(">>>>>> profile.me: " + userId);
 
         userRepository.findByUserId(userId)
                 .orElseThrow(() -> new AccessDeniedException
                         ("접근 권한이 없습니다. userId = " + userId));
 
         return userService.findByUserId(userId);
+    }
+
+    @GetMapping("/profile/me/image")
+    public String getProfileUploadUrl(HttpServletRequest request) throws IOException {
+        Long userId = authService.getUserIdFromHeader(request);
+        return userService.getUserUploadUrl(userId);
     }
 
     @GetMapping("/profile/{userId}")
@@ -68,6 +74,5 @@ public class UserApiController {
             userService.updateDeleteByUserId(userId);
         }
     }
-
 
 }

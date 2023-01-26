@@ -45,6 +45,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
+
+        // 기본 이미지 url 설정
+        user.updateImage(user.getUserId());
+
         System.out.println(user.getUserId());
 
 

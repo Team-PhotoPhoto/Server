@@ -3,7 +3,6 @@ package com.hjin.photophoto.web.posts;
 import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
-import com.hjin.photophoto.service.postImg.PostsImgService;
 import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,6 @@ public class PostsApiController {
     private final PostsService postsService;
     private final UserRepository userRepository;
     private final AuthService authService;
-    private final PostsImgService postsImgService;
 
     @GetMapping("/post/image/subjects")
     public List<SubjectsResponse> getAllSubjects() {
@@ -35,8 +34,8 @@ public class PostsApiController {
     }
 
     @GetMapping("/post/image/{postId}")
-    public String getUploadUrl(@PathVariable Long postId, @RequestParam String folder) {
-        return postsImgService.signBucket(folder, postId);
+    public String getPostsUploadUrl(@PathVariable Long postId, @RequestParam String type) throws IOException {
+        return postsService.getPostUploadUrl(postId, type);
     }
 
     @PostMapping("/post")       //@RequestParam: request 파라미터 가져옴
