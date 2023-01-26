@@ -3,6 +3,7 @@ package com.hjin.photophoto.web.posts;
 import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.service.postImg.PostsImgService;
 import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class PostsApiController {
     private final PostsService postsService;
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final PostsImgService postsImgService;
 
     @GetMapping("/post/image/subjects")
     public List<SubjectsResponse> getAllSubjects() {
@@ -30,6 +32,11 @@ public class PostsApiController {
     @PostMapping("/post/image")
     public Long uploadImage() {
         return postsService.uploadImage();
+    }
+
+    @GetMapping("/post/image/{postId}")
+    public String getUploadUrl(@PathVariable Long postId, @RequestParam String folder) {
+        return postsImgService.signBucket(folder, postId);
     }
 
     @PostMapping("/post")       //@RequestParam: request 파라미터 가져옴

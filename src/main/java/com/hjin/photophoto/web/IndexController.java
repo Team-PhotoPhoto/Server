@@ -14,7 +14,7 @@ public class IndexController {
 
     // 메인화면
     @GetMapping("/")
-    public String index(SessionUser sessionUser){ // @LoginUser 만 사용하면 세션 정보 가져올 수 있다
+    public String index(){ // @LoginUser 만 사용하면 세션 정보 가져올 수 있다
 
         //로그인 됨
 //        if (sessionUser != null) {
