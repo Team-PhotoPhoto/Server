@@ -26,10 +26,8 @@ public class AuthController {
 //    }
 
     @GetMapping("/refresh")
-    public String refresh(HttpServletRequest request, @CookieValue(name = "RefreshToken") Cookie cookie)
+    public String refresh(@RequestParam String refreshToken)
             throws AccessDeniedException {
-        String refreshToken = cookie.getValue();
-
         return authService.refresh(refreshToken);
     }
 }

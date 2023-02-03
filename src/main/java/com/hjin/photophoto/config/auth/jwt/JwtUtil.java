@@ -79,6 +79,7 @@ public class JwtUtil {
      * 토큰의 Claim 디코딩
      */
     public Claims getAllClaims(String token) {
+        System.out.println(">> token: " + token);
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
