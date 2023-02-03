@@ -39,15 +39,15 @@ public class ImageService {
 
         if (Objects.equals(type, "user")){
             bucketName = USER_BUCKET_NAME;
-            key = String.valueOf(id);
+            key = id + ".png";
         }
         else if (Objects.equals(type, "thumbnail")){
             bucketName = POST_BUCKET_NAME;
-            key = "thumbnail/" + String.valueOf(id);
+            key = "thumbnail/" + id + ".png";
         }
         else if (Objects.equals(type, "origin")){
             bucketName = POST_BUCKET_NAME;
-            key = "origin/" + String.valueOf(id);
+            key = "origin/" + id + ".png";
         } else {
             throw new IOException("type 입력이 잘못되었습니다. type: " + type);
         }
