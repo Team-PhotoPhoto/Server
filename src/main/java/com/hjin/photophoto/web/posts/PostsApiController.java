@@ -57,8 +57,7 @@ public class PostsApiController {
     }
 
     @PutMapping("/post/{postId}")
-    public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto
-            , HttpServletRequest request) throws AccessDeniedException {
+    public Long updateOpen(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         return postsService.updateOpen(postId, userIdFromHeader);
