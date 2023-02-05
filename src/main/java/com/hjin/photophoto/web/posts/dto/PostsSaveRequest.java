@@ -25,8 +25,8 @@ public class PostsSaveRequest {
         this.postId = postId;
         this.title = title;
         this.comments = comments;
-        this.thumbnailUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/thumbnail/" + postId + ".png";
-        this.originUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/origin/" + postId + ".png";
+        this.thumbnailUrl = "https://photophoto-posts-img.s3.ap-northeast-2.amazonaws.com/thumbnail/" + postId + ".png";
+        this.originUrl = "https://photophoto-posts-img.s3.ap-northeast-2.amazonaws.com/origin/" + postId + ".png";
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
         this.readYn = readYn;

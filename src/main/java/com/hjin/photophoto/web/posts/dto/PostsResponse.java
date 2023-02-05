@@ -17,7 +17,7 @@ public class PostsResponse {
     private String senderName;
     private Long receiverUserId;
     private LocalDateTime createdDate;
-    private boolean open;
+    private boolean openYn;
 
     public PostsResponse(Posts entity) {
         this.postId = entity.getPostId();
@@ -28,6 +28,6 @@ public class PostsResponse {
         this.senderName = entity.getSenderName();
         this.receiverUserId = entity.getReceiverUserId();
         this.createdDate = entity.getCreatedDate();
-        this.open = entity.isOpenYn();
+        this.openYn = entity.isOpenYn();
     }
 }
