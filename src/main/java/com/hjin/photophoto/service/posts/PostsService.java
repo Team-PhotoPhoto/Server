@@ -61,15 +61,18 @@ public class PostsService {
     }
 
     @Transactional
-    public Long updateOpen(Long postId) {
+    public Long updateOpen(Long postId, Long userIdFromHeader) throws AccessDeniedException {
         // JPA: 트랜젝션 시작 후 변경 사항 모두 DB에 자동 저장(Dirty Checking)
         Posts posts = postsRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 포스트가 없습니다. postId = " + postId));
 
-        // 데이터 값 변경
-        posts.updateOpen(true);
-        return postId;
+        if (!Objects.equals(posts.getReceiverUserId(), userIdFromHeader)) {
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + postId);
+        } else {
+            posts.updateOpen(true);
+            return postId;
+        }
     }
 
     @Transactional
@@ -78,7 +81,7 @@ public class PostsService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
 
         if(!Objects.equals(posts.getReceiverUserId(), userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
+            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. userId = " + userIdFromHeader);
         } else {
             postsRepository.delete(posts);
         }

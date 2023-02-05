@@ -59,14 +59,9 @@ public class PostsApiController {
     @PutMapping("/post/{postId}")
     public Long updateOpen(@PathVariable Long postId, @RequestBody OpenUpdateRequest requestDto
             , HttpServletRequest request) throws AccessDeniedException {
-
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
-        if (!Objects.equals(requestDto.getReceiverUserId(), userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
-        } else {
-            return postsService.updateOpen(postId);
-        }
+        return postsService.updateOpen(postId, userIdFromHeader);
     }
 
     @DeleteMapping("/posts/{postId}")
