@@ -84,7 +84,7 @@ async function submit(nickname, title, comments) {
         "readYn": false,
         "openYn": false,
     }
-    await post('/post', data);
+    await post('api/post', data);
     window.location.href = `/posts/done?postId=${postId}&hostId=${userId}`;
 }
 
@@ -97,11 +97,11 @@ export default function WritePage() {
 
     useEffect(() => {
         async function getImageUploadUrl() {
-            const wrappedPostId= await post('/post/image');
+            const wrappedPostId= await post('api/post/image');
             postId = "" + wrappedPostId.data;
-            const wrappedUploadUrl = await get('/post/image/' + postId + '?type=origin');
+            const wrappedUploadUrl = await get('api/post/image/' + postId + '?type=origin');
             uploadUrl = wrappedUploadUrl.data;
-            const wrappedThumbnailUrl = await get('/post/image/' + postId + '?type=thumbnail');
+            const wrappedThumbnailUrl = await get('api/post/image/' + postId + '?type=thumbnail');
             thumbnailUrl = wrappedThumbnailUrl.data;
         }
         userId = searchParams.get("userId");

@@ -28,7 +28,7 @@ export default function MessageBoxPage() {
 
     useEffect(() => {
         async function getInbox() {
-            const result = await get('/inbox/?page=0&size=9999');
+            const result = await get('api/inbox/?page=0&size=9999');
             if (result.data.length === 0) {
                 isEmpty = true;
             } else {

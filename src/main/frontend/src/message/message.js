@@ -22,11 +22,11 @@ function MessageSheet({ children, sheetImage, ...otherComponents }) {
 }
 
 async function postThisMessage(postId) {
-    await put(`/post/${postId}`)
+    await put(`api/post/${postId}`)
 }
 
 async function deleteThisMessage(postId) {
-    await del(`/post/${postId}`)
+    await del(`api/post/${postId}`)
 }
 
 function MessagePage() {
@@ -49,7 +49,7 @@ function MessagePage() {
         setWallType(searchParams.get('wallType'));
         setFrameType(searchParams.get('frameType'));
 
-        get(`/post/${postId}`).then((response) => {
+        get(`api/post/${postId}`).then((response) => {
             const result = response.data;
             setTitle(result.title);
             setComments(result.comments);
@@ -68,7 +68,7 @@ function MessagePage() {
                 <div className={styles.icons}>
                 <img src={deleteIconImage} className={styles.delete_icon} onClick={() => {
                     deleteThisMessage(postId);
-                    nav(-1);
+                    // nav(-1);
                 }}/>
                 <img src={downloadIconImage} className={styles.download_icon}/>
                 </div>
@@ -87,7 +87,6 @@ function MessagePage() {
                     nav(-1);
                 }} /> 
             }
-            {/* <PPStyledButton type="orange" className={styles.to_sns} text="다른 SNS에 걸기" /> */}
         </BackgroundTemplate>
         </>
     )

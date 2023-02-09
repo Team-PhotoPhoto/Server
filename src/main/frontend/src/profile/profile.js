@@ -85,13 +85,12 @@ function ImageUploadButton({ setImage, ...otherComponents }) {
 }
 
 async function getProfileImageUploadUrl() {
-    const response = await get('/profile/me/image');
+    const response = await get('api/profile/me/image');
     return response.data;
 }
 
 async function getProfileImage(userId) {
     const response = await getNoBaseUrl('https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/' + userId + '.png');
-    console.log('hihihihi');
     return response.data;
 }
 
@@ -102,7 +101,7 @@ async function updateProfile(userId, nickname, backgroundType, frameType, email,
     }
 
     console.log(nickname, backgroundType, frameType, emailNotiStatus, email)
-    const result = await put('/profile', {
+    const result = await put('api/profile', {
         nickname: nickname,
         wallType: backgroundType,
         frameType: frameType,
