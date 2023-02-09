@@ -24,6 +24,8 @@ jobs:
       
     - name: Gradle Test
       run: ./gradlew test
+      env:
+         CI: ""
     
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@v2
