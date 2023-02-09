@@ -71,7 +71,7 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
         return UriComponentsBuilder.newInstance()
                 .scheme("http")
                 .host(CLIENT_HOST)
-                .port(3000)
+                .port(8080)
                 .path("/oauth2/redirect")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
