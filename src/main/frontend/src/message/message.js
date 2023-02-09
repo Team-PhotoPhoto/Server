@@ -22,11 +22,11 @@ function MessageSheet({ children, sheetImage, ...otherComponents }) {
 }
 
 async function postThisMessage(postId) {
-    await put(`api/post/${postId}`)
+    await put(`/api/post/${postId}`)
 }
 
 async function deleteThisMessage(postId) {
-    await del(`api/post/${postId}`)
+    await del(`/api/post/${postId}`)
 }
 
 function MessagePage() {
@@ -49,7 +49,7 @@ function MessagePage() {
         setWallType(searchParams.get('wallType'));
         setFrameType(searchParams.get('frameType'));
 
-        get(`api/post/${postId}`).then((response) => {
+        get(`/api/post/${postId}`).then((response) => {
             const result = response.data;
             setTitle(result.title);
             setComments(result.comments);
@@ -68,7 +68,7 @@ function MessagePage() {
                 <div className={styles.icons}>
                 <img src={deleteIconImage} className={styles.delete_icon} onClick={() => {
                     deleteThisMessage(postId);
-                    // nav(-1);
+                    nav(-1);
                 }}/>
                 <img src={downloadIconImage} className={styles.download_icon}/>
                 </div>

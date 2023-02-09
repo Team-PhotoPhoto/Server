@@ -106,7 +106,7 @@ function GalleryArea({ postList, frameType, onClickFrame }) {
 }
 
 async function getUserData(userId) {
-    const userInfo = userId === 'me'? await getCurrentUserInfo() : (await get(`api/profile/${userId}`)).data;
+    const userInfo = userId === 'me'? await getCurrentUserInfo() : (await get(`/api/profile/${userId}`)).data;
     console.log(userInfo);
     const newUserId = userInfo.userId;
     const nickname = userInfo.nickname;
@@ -146,7 +146,7 @@ function GalleryPage() {
             setIsOwner(newUserId == userId);
         });
 
-        get(`api/gallery/${userId}`).then((response) => {
+        get(`/api/gallery/${userId}`).then((response) => {
             var tmp = [];
             response.data.map((post) => {
                 var tmp2 = new PostItem(post.postId, post.thumbnailUrl);

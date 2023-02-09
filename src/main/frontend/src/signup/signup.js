@@ -16,7 +16,7 @@ async function submitNickname(nickname) {
     const wallTypeCount = 4;
     const frameTypeCount = 4;
     console.log(nickname);
-    const result = await put('api/profile', 
+    const result = await put('/api/profile', 
         {
             "nickname": nickname,
             "wallType": "BROWN",

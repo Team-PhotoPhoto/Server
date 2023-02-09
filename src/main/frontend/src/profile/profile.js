@@ -85,7 +85,7 @@ function ImageUploadButton({ setImage, ...otherComponents }) {
 }
 
 async function getProfileImageUploadUrl() {
-    const response = await get('api/profile/me/image');
+    const response = await get('/api/profile/me/image');
     return response.data;
 }
 
@@ -101,7 +101,7 @@ async function updateProfile(userId, nickname, backgroundType, frameType, email,
     }
 
     console.log(nickname, backgroundType, frameType, emailNotiStatus, email)
-    const result = await put('api/profile', {
+    const result = await put('/api/profile', {
         nickname: nickname,
         wallType: backgroundType,
         frameType: frameType,
