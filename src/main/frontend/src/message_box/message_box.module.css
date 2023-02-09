@@ -1,0 +1,115 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+
+    padding: 4.5vw;
+    padding-top: 3vh;
+
+    border-bottom: 2px solid #98C4CB;
+}
+
+.title {
+    font-size: 7vw;
+    color: #005865;
+}
+
+.upload_photo {
+    height: 6.5vw;
+    background: linear-gradient(180deg, #D8F7FC 0%, #CAF8FF 100%);
+    border: 1px solid #005865;
+    border-radius: 5px;
+
+    align-self: center;
+    padding-left: 3vw;
+    padding-right: 3vw;
+
+    font-family: "neo-dunggeunmo";
+    font-size: 3.5vw;
+    font-weight: 400;
+    color: #005865;
+}
+
+.message {
+    width: 100%;
+    padding-bottom: 3.5vw;
+    display: flex;
+
+    border-bottom: 1px solid #98C4CB;
+}
+
+.left_area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 4vw;
+    text-align: start;
+}
+
+.sender {
+    font-size: 4.5vw;
+    color: #989898;
+}
+
+.photo_title {
+    font-size: 5vw;
+    margin-top: 0;
+    color: #484848;
+}
+
+.sent_date {
+    margin-bottom: 0;
+    font-size: 3vw;
+    color: #989898;
+}
+
+.right_area {
+    display: flex;
+    justify-content: end;
+    align-self: flex-end;
+    align-items: center;
+    margin-right: 4vw;
+    text-align: end;
+}
+
+.read_status {
+    margin-right: 3vw;
+
+    font-size: 3.2vw;
+    color: #4D4D4D;   
+}
+
+.arrow_icon {
+    font-size: 5vw;
+    color: #B7B7B7;
+}
+
+.message:hover {
+    background: #5B99A3;
+}
+
+.message:hover .sender,
+.message:hover .photo_title,
+.message:hover .read_status {
+    color: #ffffff;
+}
+
+.message:hover .sent_date {
+    color: #E1E1E1;
+}
+
+/* .message:hover .arrow_icon {
+    border: 1px solid #ffffff;
+} */
+
+.empty_description {
+    margin-top: 18vh;
+    font-size: 4vw;
+    color: #005865;
+}
+
+.share_link_button {
+    width: 72%;
+    margin: 0 auto;
+    margin-top: 4vh;
+}

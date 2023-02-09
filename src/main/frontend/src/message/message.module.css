@@ -1,0 +1,82 @@
+.header {
+    margin-top: 4vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: auto auto;
+    font-size: 4.5vw;
+}
+
+.delete_icon {
+    margin-right: 1vw;
+}
+
+.icons {
+    margin-right: 4vw;
+}
+
+.photo_frame {
+    width: 100vw;
+    height: 110vw;
+    margin: 0 auto;
+}
+
+.sheet {
+    width: 100%;
+    height: 140vw;
+
+    text-align: start;
+}
+
+.inner_sheet {
+    height: 100%;
+
+    padding-left: 8.5vw;
+    padding-right: 17vw;
+    padding-top: 3vw;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.body {
+    flex: 1;
+
+    font-size: 4.5vw;
+    font-weight: 400;
+    line-height: 10vw;
+    color: #4A2113;
+}
+
+.sent_date {
+    margin-bottom: 0;
+    text-align: end;
+
+    font-size: 3.8vw;
+    color: #82422C
+}
+
+.sender {
+    margin-bottom: 20vw;
+
+    text-align: end;
+    font-size: 4.6vw;
+    color: #4A2113;
+}
+
+.to_gallary {
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 8vw;
+}
+
+.to_sns {
+    width: 75%;
+    margin: 4vw auto;
+}

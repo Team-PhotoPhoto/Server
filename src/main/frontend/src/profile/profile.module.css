@@ -1,0 +1,120 @@
+.profile_area {
+    width: 100%;
+
+    margin-top: 8vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile_image {
+    width: 24vw;
+    height: 24vw;
+
+    overflow: hidden;
+    border-radius: 50%;
+
+    border: 4px solid #FF7A00;
+}
+
+.profile_image_description {
+    margin-top: 1.5vh;
+
+    font-size: 3vw;
+    color: #FF7A00;
+}
+
+.nickname_set_area {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 5.5vh;
+}
+
+.wallpaper_selector, .frame_selector {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 5vh;
+
+    font-size: 3.5vw;
+    text-align: start;
+}
+
+.frame_selector {
+    margin-top: 2vh;
+}
+
+.selector_box {
+    margin-top: 2vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.noti_email_section {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 5vh;
+    font-size: 3.3vw;
+    text-align: start;
+}
+
+.noti_email_toggle {
+    width: 1em;
+    height: 1em;
+    align-self: flex-end;
+}
+
+.noti_email_input {
+    width: 100%;
+    height: 6vw;
+
+    padding-left: 1vw;
+    font-family: "neo-dunggeunmo";
+    font-size: 3.5vw;
+    background: #FFFFFF;
+    border: 2px solid #8A8A8A;
+    border-radius: 1.5vw;
+}
+
+.noti_email_domain {
+    width: 22vw;
+    height: 6vw;
+    margin-left: 1.5vw;
+    background-color: transparent;
+    border: 0px;
+    border-bottom: 1px solid black;
+
+    font-family: "neo-dunggeunmo";
+    font-size: 3.5vw;
+}
+
+.noti_email_domain_custom {
+    margin-top: -5.5vw;
+    margin-left: 36vw;
+
+    width: 10vw;
+}
+
+.save_profile_button {
+    width: 72%;
+
+    margin-top: 8vh;
+}
+
+.informations {
+    width: 40%;
+    margin: 0 auto;
+    margin-top: 3vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 2vw;
+    text-align: start;
+}
+
+.share_link {
+    margin-top: 2vh;
+    margin-bottom: 3vh;
+    font-size: 2.5vw;
+}

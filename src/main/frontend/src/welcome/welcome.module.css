@@ -1,0 +1,100 @@
+body {
+    text-align: center;
+}
+
+.title {
+    margin: 0 auto;
+    margin-top: 10vh;
+    width: 50vw;
+}
+
+.main_illust {
+    width: 50vw;
+    height: auto;
+
+    margin-top: 3vh;
+
+    z-index: 1;
+    
+    align-self: center;
+}
+
+.bottom_section {
+    position: relative;
+    width: 90vw;
+
+    padding-top: 15vh;
+    padding-bottom: 18vh;
+    margin: auto;
+    margin-top: -10vh;
+    margin-bottom: 0;
+
+    background-image: url(./res/assets/sub_background.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%; 
+    /* 이미지를 좀 더 길게 넣어야 할 듯 */
+
+    z-index: 0;
+
+}
+
+.discription {
+    font-weight: 400;
+    font-size: 3vw;
+    line-height: 4vw;
+
+    z-index: 1;
+
+    color: #0D1D54;
+}
+
+.help_ico {
+    width: 3vw;
+    height: 3vw;
+    margin-right: 1vw;
+}
+
+.help_button {
+    margin: 6vw auto;
+    padding: 2vw 4vw;
+
+    display: flex;
+    align-items: center;
+
+    background: linear-gradient(180deg, #FFDAB8, #FFAC5F);
+    border: 1px solid #502600;
+    border-radius: 2.5vw;
+
+    font-family: 'neo-dunggeunmo';
+    font-size: 3.5vw;
+    color: #502600;
+}
+
+.sns_login_section {
+    margin-top: 2vh;
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3vw;
+    line-height: 2vh;
+
+    color: #0D1D54;
+}
+
+.sns_login_button {
+    width: 12vw;
+    margin-left: 3vw;
+    margin-right: 3vw;
+}
+
+.informations {
+    margin-top: 2vh;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 3vw;
+    line-height: 2vh;
+
+    text-align: center;
+
+    color: #8A8A8A;
+}
