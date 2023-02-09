@@ -24,20 +24,20 @@ public class UserApiController {
     private final UserRepository userRepository;
     private final AuthService authService;
 
-    @GetMapping("/profile/signup")
+    @GetMapping("/api/profile/signup")
     public String signUpEmail(HttpServletRequest request) {
         String emailAuth = authService.getEmailAuthFromHeader(request);
         System.out.println("emailAuth: " + emailAuth);
         return emailAuth;
     }
 
-    @PutMapping("/profile")
+    @PutMapping("/api/profile")
     public Long updateProfile(HttpServletRequest request, @RequestBody UserUpdateRequest requestDto) {
         Long userId = authService.getUserIdFromHeader(request);
         return userService.update(userId, requestDto);
     }
 
-    @GetMapping("/profile/me")
+    @GetMapping("/api/profile/me")
     public UserResponse getMyProfile(HttpServletRequest request) throws AccessDeniedException {
         Long userId = authService.getUserIdFromHeader(request);
 //        System.out.println(">>>>>> profile.me: " + userId);
@@ -49,18 +49,18 @@ public class UserApiController {
         return userService.findByUserId(userId);
     }
 
-    @GetMapping("/profile/me/image")
+    @GetMapping("/api/profile/me/image")
     public String getProfileUploadUrl(HttpServletRequest request) throws IOException {
         Long userId = authService.getUserIdFromHeader(request);
         return userService.getUserUploadUrl(userId);
     }
 
-    @GetMapping("/profile/{userId}")
+    @GetMapping("/api/profile/{userId}")
     public UserResponse getOtherProfile(@PathVariable Long userId) {
         return userService.findByUserId(userId);
     }
 
-    @PutMapping("/deleteaccount/{userId}")
+    @PutMapping("/api/deleteaccount/{userId}")
     public void deleteAccount(@PathVariable Long userId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 

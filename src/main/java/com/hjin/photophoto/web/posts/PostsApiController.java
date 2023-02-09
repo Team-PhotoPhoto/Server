@@ -23,27 +23,27 @@ public class PostsApiController {
     private final UserRepository userRepository;
     private final AuthService authService;
 
-    @GetMapping("/post/image/subjects")
+    @GetMapping("/api/post/image/subjects")
     public List<SubjectsResponse> getAllSubjects() {
         return postsService.findAllSubjects();
     }
 
-    @PostMapping("/post/image")
+    @PostMapping("/api/post/image")
     public Long uploadImage() {
         return postsService.uploadImage();
     }
 
-    @GetMapping("/post/image/{postId}")
+    @GetMapping("/api/post/image/{postId}")
     public String getPostsUploadUrl(@PathVariable Long postId, @RequestParam String type) throws IOException {
         return postsService.getPostUploadUrl(postId, type);
     }
 
-    @PostMapping("/post")       //@RequestParam: request 파라미터 가져옴
+    @PostMapping("/api/post")       //@RequestParam: request 파라미터 가져옴
     public Long savePost(@RequestBody PostsSaveRequest requestDto) {
         return postsService.save(requestDto);
     }
 
-    @PostMapping("/post/me")       //@RequestParam: request 파라미터 가져옴
+    @PostMapping("/api/post/me")       //@RequestParam: request 파라미터 가져옴
     public Long saveMyPost(@RequestBody PostsSaveRequest requestDto, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
@@ -56,28 +56,28 @@ public class PostsApiController {
 
     }
 
-    @PutMapping("/post/{postId}")
+    @PutMapping("/api/post/{postId}")
     public Long updateOpen(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         return postsService.updateOpen(postId, userIdFromHeader);
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/api/posts/{postId}")
     public Long deletePost(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
         postsService.delete(postId, userIdFromHeader);
         return postId;
     }
 
-    @GetMapping("/post/{postId}")
+    @GetMapping("/api/post/{postId}")
     public PostsResponse getPost(@PathVariable Long postId) {
         postsService.updateRead(postId);
         return postsService.findByPostId(postId);
     }
 
 
-    @GetMapping("/inbox")
+    @GetMapping("/api/inbox")
     public List<InboxResponse> getInbox(Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
 
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
@@ -89,7 +89,7 @@ public class PostsApiController {
         return postsService.findAllByUserId(user.getUserId(), pageable);
     }
 
-    @GetMapping("/gallery/me")
+    @GetMapping("/api/gallery/me")
     public List<GalleryResponse> findMyGallery(
             Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
@@ -101,7 +101,7 @@ public class PostsApiController {
         return postsService.findAllByUserIdOpen(user.getUserId(), pageable);
     }
 
-    @GetMapping("/gallery/{userId}")
+    @GetMapping("/api/gallery/{userId}")
     public List<GalleryResponse> getOtherGallery(@PathVariable Long userId, Pageable pageable) {
         return postsService.findAllByUserIdOpen(userId, pageable);
     }
