@@ -1,0 +1,3 @@
+[submodule "src/main/src/main/Front"]
+	path = src/main/src/main/Front
+	url = https://github.com/Team-PhotoPhoto/Server.git
