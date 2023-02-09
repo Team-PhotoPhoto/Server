@@ -12,7 +12,7 @@ public class IndexController {
 //    private final UserRepository userRepository;
 
 
-    @GetMapping(value =  {"", "/", "/oauth2/redirect", "/signup", "/gallery/:userId", "/profile/{userId}", "/posts/onboarding", "/posts/write", "/posts/done", "/inbox", "/post/{postId}"})
+    @GetMapping(value =  {"", "/", "/oauth2/redirect", "/signup", "/gallery/{userId}", "/profile/{userId}", "/posts/onboarding", "/posts/write", "/posts/done", "/inbox", "/post/{postId}"})
     public String forward() {
         return "forward:/index.html";
     }
