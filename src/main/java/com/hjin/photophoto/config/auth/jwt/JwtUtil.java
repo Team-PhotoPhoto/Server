@@ -80,6 +80,7 @@ public class JwtUtil {
      */
     public Claims getAllClaims(String token) {
         System.out.println(">> token: " + token);
+//        log.info(); debug level, jpa 로그 빼기
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

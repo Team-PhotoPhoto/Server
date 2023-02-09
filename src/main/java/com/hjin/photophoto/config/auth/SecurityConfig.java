@@ -37,6 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .anyRequest().permitAll()   //위에 설정된 url 이외 나머지들. 모두 허용
                 .and()
+                    .logout()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .and()
                     .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                     .oauth2Login()
                     .successHandler(loginHandler)
