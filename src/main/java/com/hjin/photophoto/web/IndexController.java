@@ -17,6 +17,12 @@ public class IndexController {
         return "forward:/index.html";
     }
 
+    @GetMapping("/login?logout")
+    public String logout() {
+        return "redirect:/";
+
+    }
+
 
     // 메인화면
 //    @GetMapping("/")
