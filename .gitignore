@@ -1,6 +1,7 @@
 application-oauth.properties
 
 application-aws.properties
+**/src/main/resources/static
 
 HELP.md
 .gradle
