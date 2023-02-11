@@ -49,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 기본 이미지 url 설정
         user.updateImage(user.getUserId());
 
-        System.out.println(user.getUserId());
+//        System.out.println("attributes.getAttributes(): " + attributes.getAttributes());
 
 
 //

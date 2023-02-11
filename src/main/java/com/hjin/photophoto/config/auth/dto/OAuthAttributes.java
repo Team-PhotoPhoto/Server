@@ -57,10 +57,11 @@ public class OAuthAttributes {
     private static OAuthAttributes ofKakao (Map<String, Object> attributes) {
 
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
+        response.put("id", attributes.get("id"));
 //        System.out.println(response.get("email"));
         return OAuthAttributes.builder()
                 .emailAuth((String) response.get("email"))
-                .attributes(attributes)
+                .attributes(response)
                 .nameAttributeKey("id")
                 .build();
     }

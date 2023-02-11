@@ -29,8 +29,8 @@ public class JwtUtil {
      * 토큰 생성
      */
     public JwtTokenResponse generateToken(Long userId) {
-        System.out.println("generate: ");
-        System.out.println(userId);
+//        System.out.println("generate: ");
+//        System.out.println(userId);
         long now = System.currentTimeMillis();
 
         String accessToken = Jwts.builder()
@@ -79,7 +79,7 @@ public class JwtUtil {
      * 토큰의 Claim 디코딩
      */
     public Claims getAllClaims(String token) {
-        System.out.println(">> token: " + token);
+//        System.out.println(">> token: " + token);
 //        log.info(); debug level, jpa 로그 빼기
         return Jwts.parserBuilder()
                 .setSigningKey(key)

@@ -30,8 +30,6 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Value("${client.host}")
     private String CLIENT_HOST;
 
-
-    private final RefreshTokenRepository refreshTokenRepository;
     private final AuthService authService;
     private final UserRepository userRepository;
 
@@ -44,6 +42,7 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         //login 성공한 사용자 목록
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+//        System.out.println(">> getAttributes(): " + oAuth2User.getAttributes());
         String email = (String) oAuth2User.getAttributes().get("email");
 
         Long userId = userRepository.findByEmailAuth(email)
