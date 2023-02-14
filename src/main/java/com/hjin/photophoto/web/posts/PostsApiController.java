@@ -63,7 +63,7 @@ public class PostsApiController {
         return postsService.updateOpen(postId, userIdFromHeader);
     }
 
-    @DeleteMapping("/api/posts/{postId}")
+    @DeleteMapping("/api/post/{postId}")
     public Long deletePost(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
         postsService.delete(postId, userIdFromHeader);
