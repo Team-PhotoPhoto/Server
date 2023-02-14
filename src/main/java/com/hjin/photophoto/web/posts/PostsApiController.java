@@ -4,6 +4,7 @@ import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.service.posts.PostsService;
+import com.hjin.photophoto.service.view.ViewService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class PostsApiController {
     private final PostsService postsService;
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final ViewService viewService;
 
     @GetMapping("/api/post/image/subjects")
     public List<SubjectsResponse> getAllSubjects() {
@@ -40,6 +42,9 @@ public class PostsApiController {
 
     @PostMapping("/api/post")       //@RequestParam: request 파라미터 가져옴
     public Long savePost(@RequestBody PostsSaveRequest requestDto) {
+        // unreadCount++
+        viewService.plus1ViewCount(requestDto.getReceiverUserId());
+
         return postsService.save(requestDto);
     }
 
@@ -59,7 +64,6 @@ public class PostsApiController {
     @PutMapping("/api/post/{postId}")
     public Long updateOpen(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
-
         return postsService.updateOpen(postId, userIdFromHeader);
     }
 
@@ -72,7 +76,6 @@ public class PostsApiController {
 
     @GetMapping("/api/post/{postId}")
     public PostsResponse getPost(@PathVariable Long postId) {
-        postsService.updateRead(postId);
         return postsService.findByPostId(postId);
     }
 
@@ -87,6 +90,17 @@ public class PostsApiController {
                         ("접근 권한이 없습니다. userId = " + userIdFromHeader));
 
         return postsService.findAllByUserId(user.getUserId(), pageable);
+    }
+
+    @GetMapping("/api/inbox/post/{postId}")
+    public PostsResponse getInboxPost(@PathVariable Long postId, HttpServletRequest request) {
+        postsService.updateRead(postId);
+
+        // unreadCount--
+        Long userIdFromHeader = authService.getUserIdFromHeader(request);
+        viewService.minus1ViewCount(userIdFromHeader);
+
+        return postsService.findByPostId(postId);
     }
 
     @GetMapping("/api/gallery/me")

@@ -18,8 +18,9 @@ public class UserResponse {
     private String emailNoti;
     private boolean noti;
     private Role role;
+    private int unreadCount;
 
-    public UserResponse(User entity) {
+    public UserResponse(User entity, int unreadCount) {
         this.userId = entity.getUserId();
         this.imageUrl = entity.getImageUrl();
         this.nickname = entity.getNickname();
@@ -28,5 +29,6 @@ public class UserResponse {
         this.emailNoti = entity.getEmailNoti();
         this.noti = entity.isNoti();
         this.role = entity.getRole();
+        this.unreadCount = unreadCount;
     }
 }

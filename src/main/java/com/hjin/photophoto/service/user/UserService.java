@@ -3,6 +3,8 @@ package com.hjin.photophoto.service.user;
 import com.amazonaws.HttpMethod;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.domain.view.View;
+import com.hjin.photophoto.domain.view.ViewRepository;
 import com.hjin.photophoto.service.ImageService;
 import com.hjin.photophoto.web.user.dto.UserResponse;
 import com.hjin.photophoto.web.user.dto.UserUpdateRequest;
@@ -20,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final ImageService imageService;
+    private final ViewRepository viewRepository;
 
 
     @Transactional
@@ -41,7 +44,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException
                         ("해당 유저가 없습니다. userId = " + userId));
 
-
         user.update(requestDto.getNickname(),
                 requestDto.getFrameType(), requestDto.getWallType(),requestDto.getEmailNoti(), requestDto.isNoti());
 
@@ -53,7 +55,10 @@ public class UserService {
         User entity = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + userId));
 
-        return new UserResponse(entity);
+        View view = viewRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + userId));
+
+        return new UserResponse(entity, view.getCount());
     }
 
     @Transactional
@@ -63,6 +68,6 @@ public class UserService {
                         ("해당 유저가 없습니다. userId = " + userId));
 
         user.updateDelete();
-        return;
     }
+
 }
