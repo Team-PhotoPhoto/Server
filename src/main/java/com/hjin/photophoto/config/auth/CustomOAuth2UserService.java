@@ -5,6 +5,8 @@ import com.hjin.photophoto.config.auth.jwt.JwtUtil;
 import com.hjin.photophoto.domain.refreshToken.RefreshTokenRepository;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.domain.view.ViewRepository;
+import com.hjin.photophoto.service.view.ViewService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.loader.collection.OneToManyJoinWalker;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +26,7 @@ import java.util.Map;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
+    private final ViewService viewService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -72,6 +75,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         // userEntity 저장
+        viewService.saveView(user.getUserId());
         return userRepository.save(user);
     }
 
