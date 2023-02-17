@@ -58,7 +58,6 @@ public class OAuthAttributes {
 
         Map<String, Object> response = (Map<String, Object>) attributes.get("kakao_account");
         response.put("id", attributes.get("id"));
-//        System.out.println(response.get("email"));
         return OAuthAttributes.builder()
                 .emailAuth((String) response.get("email"))
                 .attributes(response)
