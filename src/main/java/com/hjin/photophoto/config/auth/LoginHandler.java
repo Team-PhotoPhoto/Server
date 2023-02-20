@@ -42,7 +42,7 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         //login 성공한 사용자 목록
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-//        System.out.println(">> getAttributes(): " + oAuth2User.getAttributes());
+        System.out.println(">> getAttributes(): " + oAuth2User.getAttributes());
         String email = (String) oAuth2User.getAttributes().get("email");
 
         Long userId = userRepository.findByEmailAuth(email)
@@ -50,7 +50,7 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
                         ("해당 유저가 없습니다. emailAuth = " + email))
                 .getUserId();
 
-//        System.out.println(("loginHandler - userid: " + userId));
+        System.out.println(("loginHandler - userid: " + userId));
         // 토큰 발행
         JwtTokenResponse jwtToken = jwtUtil.generateToken(userId);
 
