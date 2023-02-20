@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class ViewService {
@@ -38,8 +40,12 @@ public class ViewService {
     }
 
     @Transactional
-    public void saveView(Long userId) {
-        viewRepository.save(View.builder()
+    public View saveView(Long userId) {
+        System.out.println(">> userId: " + userId);
+        Optional<View> view = viewRepository.findByUserId(userId);
+        System.out.println(">> view: " + view);
+
+        return viewRepository.save(View.builder()
                 .userId(userId)
                 .count(0)
                 .build());

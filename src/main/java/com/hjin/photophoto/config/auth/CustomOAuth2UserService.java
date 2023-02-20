@@ -27,6 +27,7 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
     private final ViewService viewService;
+    private final ViewRepository viewRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -75,7 +76,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         // userEntity 저장
-        viewService.saveView(user.getUserId());
+        viewRepository.findByUserId(user.getUserId())
+                        .orElse(viewService.saveView(user.getUserId()));
         return userRepository.save(user);
     }
 
