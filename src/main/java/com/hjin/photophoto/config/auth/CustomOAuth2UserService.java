@@ -76,8 +76,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         // userEntity 저장
-        viewRepository.findByUserId(user.getUserId())
-                        .orElse(viewService.saveView(user.getUserId()));
+//        System.out.println(">> view insert: \n");
+        viewService.saveView(user.getUserId());
+//        viewRepository.findByUserId(user.getUserId())
+//                        .orElse(viewService.saveView(user.getUserId()));
         return userRepository.save(user);
     }
 

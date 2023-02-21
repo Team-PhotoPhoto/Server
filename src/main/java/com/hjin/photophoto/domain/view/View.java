@@ -13,11 +13,7 @@ import javax.persistence.*;
 public class View extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "view_id")
-    private Long viewId;
-
-    @Column(nullable = false, name = "user_id")
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(nullable = false, name = "count")
@@ -25,7 +21,6 @@ public class View extends BaseTimeEntity {
 
     @Builder
     public View(Long viewId, Long userId, int count) {
-        this.viewId = viewId;
         this.userId = userId;
         this.count = count;
     }

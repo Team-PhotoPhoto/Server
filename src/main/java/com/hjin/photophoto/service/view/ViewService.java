@@ -41,9 +41,9 @@ public class ViewService {
 
     @Transactional
     public View saveView(Long userId) {
-        System.out.println(">> userId: " + userId);
-        Optional<View> view = viewRepository.findByUserId(userId);
-        System.out.println(">> view: " + view);
+//        System.out.println(">> userId: " + userId);
+//        Optional<View> view = viewRepository.findByUserId(userId);
+//        System.out.println(">> view: " + view);
 
         return viewRepository.save(View.builder()
                 .userId(userId)
