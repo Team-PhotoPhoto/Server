@@ -76,6 +76,12 @@ public class PostsApiController {
 
     @GetMapping("/api/post/{postId}")
     public PostsResponse getPost(@PathVariable Long postId) {
+        PostsResponse postsResponse = postsService.findByPostId(postId);
+
+        if (!postsResponse.isOpenYn()) {
+            // open 되지 않은 포스트 읽기 금지
+            throw new MyException(MyExceptionType.NO_PERMISSION, postId);
+        }
         return postsService.findByPostId(postId);
     }
 

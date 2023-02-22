@@ -32,7 +32,7 @@ public class PostsService {
     private final ImageService imageService;
 
     @Transactional
-    public String getPostUploadUrl(Long postId, String type) throws IOException {
+    public String getPostUploadUrl(Long postId, String type) {
         return imageService.getSingedUrl(2, type, postId, HttpMethod.PUT);
     }
 
