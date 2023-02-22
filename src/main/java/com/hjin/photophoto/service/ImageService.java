@@ -5,6 +5,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.hjin.photophoto.exception.MyException;
+import com.hjin.photophoto.exception.MyExceptionType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class ImageService {
     private final AmazonS3Client amazonS3Client;
 
 
-    public String getSingedUrl(int minutes, String type, Long id, HttpMethod method) throws IOException {
+    public String getSingedUrl(int minutes, String type, Long id, HttpMethod method) {
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
         expTimeMillis += 1000L * 60 * minutes;     //min
@@ -49,7 +51,7 @@ public class ImageService {
             bucketName = POST_BUCKET_NAME;
             key = "origin/" + id + ".png";
         } else {
-            throw new IOException("type 입력이 잘못되었습니다. type: " + type);
+            throw new MyException(MyExceptionType.NOT_EXIST_BUCKET_TYPE, id);
         }
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest =

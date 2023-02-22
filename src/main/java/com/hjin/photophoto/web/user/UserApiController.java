@@ -3,8 +3,9 @@ package com.hjin.photophoto.web.user;
 import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.exception.MyException;
+import com.hjin.photophoto.exception.MyExceptionType;
 import com.hjin.photophoto.service.user.UserService;
-import com.hjin.photophoto.service.view.ViewService;
 import com.hjin.photophoto.web.user.dto.UserResponse;
 import com.hjin.photophoto.web.user.dto.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.AccessDeniedException;
 import java.util.Objects;
 
@@ -44,19 +44,14 @@ public class UserApiController {
     }
 
     @GetMapping("/api/profile/me")
-    public UserResponse getMyProfile(HttpServletRequest request) throws AccessDeniedException {
+    public UserResponse getMyProfile(HttpServletRequest request) {
         Long userId = authService.getUserIdFromHeader(request);
 //        System.out.println(">>>>>> profile.me: " + userId);
-
-        userRepository.findByUserId(userId)
-                .orElseThrow(() -> new AccessDeniedException
-                        ("접근 권한이 없습니다. userId = " + userId));
-
         return userService.findByUserId(userId);
     }
 
     @GetMapping("/api/profile/me/image")
-    public String getProfileUploadUrl(HttpServletRequest request) throws IOException {
+    public String getProfileUploadUrl(HttpServletRequest request) {
         Long userId = authService.getUserIdFromHeader(request);
         return userService.getUserUploadUrl(userId);
     }
@@ -70,12 +65,8 @@ public class UserApiController {
     public void deleteAccount(@PathVariable Long userId, HttpServletRequest request) throws AccessDeniedException {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + userId));
-
         if(!Objects.equals(userId, userIdFromHeader)) {
-            throw new AccessDeniedException("해당 계정을 탈퇴할 수 있는 유저가 아닙니다. userId = " + user.getUserId());
+            throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
         }
         else {
             userService.updateDeleteByUserId(userId);

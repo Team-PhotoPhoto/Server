@@ -7,6 +7,8 @@ import com.hjin.photophoto.domain.posts.Posts;
 import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.subjects.SubjectsRepository;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.exception.MyException;
+import com.hjin.photophoto.exception.MyExceptionType;
 import com.hjin.photophoto.service.ImageService;
 import com.hjin.photophoto.web.posts.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +48,11 @@ public class PostsService {
     public Long save(PostsSaveRequest requestDto) {
         // PostImg 에서 삭제
         PostsImg postsImg = postsImgRepository.findById(requestDto.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시글의 이미지가 없습니다. postId = " + requestDto.getPostId()));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_IMAGE_POST, requestDto.getPostId()));
 
         postsImgRepository.delete(postsImg);
+
+
 
         return postsRepository.save(requestDto.toEntity())
                 .getPostId();
@@ -61,14 +65,13 @@ public class PostsService {
     }
 
     @Transactional
-    public Long updateOpen(Long postId, Long userIdFromHeader) throws AccessDeniedException {
+    public Long updateOpen(Long postId, Long userIdFromHeader) {
         // JPA: 트랜젝션 시작 후 변경 사항 모두 DB에 자동 저장(Dirty Checking)
         Posts posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 포스트가 없습니다. postId = " + postId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_POST, postId));
 
         if (!Objects.equals(posts.getReceiverUserId(), userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. postId = " + postId);
+            throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
         } else {
             posts.updateOpen(true);
             return postId;
@@ -76,12 +79,12 @@ public class PostsService {
     }
 
     @Transactional
-    public void delete (Long postId, Long userIdFromHeader) throws AccessDeniedException {
+    public void delete (Long postId, Long userIdFromHeader) {
         Posts posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId = " + postId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_POST, postId));
 
         if(!Objects.equals(posts.getReceiverUserId(), userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 수정할 수 있는 유저가 아닙니다. userId = " + userIdFromHeader);
+            throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
         } else {
             postsRepository.delete(posts);
         }
@@ -90,8 +93,7 @@ public class PostsService {
     @Transactional
     public void updateRead(Long postId) {
         Posts posts = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 포스트가 없습니다. postId = " + postId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_POST, postId));
 
         posts.updateRead(true);
     }
@@ -99,7 +101,7 @@ public class PostsService {
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public PostsResponse findByPostId(Long postId) {
         Posts entity = postsRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 포스트가 없습니다. postId=" + postId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_POST, postId));
 
         return new PostsResponse(entity);
 
@@ -109,8 +111,7 @@ public class PostsService {
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public List<InboxResponse> findAllByUserId(Long receiverUserId, Pageable pageable) {
         userRepository.findByUserId(receiverUserId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + receiverUserId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, receiverUserId));
 
         return postsRepository.findPostsByReceiverUserIdOrderByCreatedDateDesc(receiverUserId, pageable)
                 .stream()
@@ -122,8 +123,7 @@ public class PostsService {
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
     public List<GalleryResponse> findAllByUserIdOpen(Long receiverUserId, Pageable pageable) {
         userRepository.findByUserId(receiverUserId)
-                .orElseThrow(() -> new IllegalArgumentException
-                        ("해당 유저가 없습니다. userId = " + receiverUserId));
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, receiverUserId));
 
         return postsRepository
                 .findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(receiverUserId, true, pageable)

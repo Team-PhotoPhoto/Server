@@ -3,6 +3,8 @@ package com.hjin.photophoto.web.posts;
 import com.hjin.photophoto.config.auth.AuthService;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
+import com.hjin.photophoto.exception.MyException;
+import com.hjin.photophoto.exception.MyExceptionType;
 import com.hjin.photophoto.service.posts.PostsService;
 import com.hjin.photophoto.service.view.ViewService;
 import com.hjin.photophoto.web.posts.dto.*;
@@ -11,8 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +36,7 @@ public class PostsApiController {
     }
 
     @GetMapping("/api/post/image/{postId}")
-    public String getPostsUploadUrl(@PathVariable Long postId, @RequestParam String type) throws IOException {
+    public String getPostsUploadUrl(@PathVariable Long postId, @RequestParam String type) {
         return postsService.getPostUploadUrl(postId, type);
     }
 
@@ -49,12 +49,12 @@ public class PostsApiController {
     }
 
     @PostMapping("/api/post/me")       //@RequestParam: request 파라미터 가져옴
-    public Long saveMyPost(@RequestBody PostsSaveRequest requestDto, HttpServletRequest request) throws AccessDeniedException {
+    public Long saveMyPost(@RequestBody PostsSaveRequest requestDto, HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         // 나->나인가?
         if (!Objects.equals(requestDto.getReceiverUserId(), userIdFromHeader)) {
-            throw new AccessDeniedException("해당 게시글을 저장할 수 있는 유저가 아닙니다. postId = " + userIdFromHeader);
+            throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
         } else {
             return postsService.save(requestDto);
         }
@@ -62,13 +62,13 @@ public class PostsApiController {
     }
 
     @PutMapping("/api/post/{postId}")
-    public Long updateOpen(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
+    public Long updateOpen(@PathVariable Long postId, HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
         return postsService.updateOpen(postId, userIdFromHeader);
     }
 
     @DeleteMapping("/api/post/{postId}")
-    public Long deletePost(@PathVariable Long postId, HttpServletRequest request) throws AccessDeniedException {
+    public Long deletePost(@PathVariable Long postId, HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
         postsService.delete(postId, userIdFromHeader);
         return postId;
@@ -81,13 +81,12 @@ public class PostsApiController {
 
 
     @GetMapping("/api/inbox")
-    public List<InboxResponse> getInbox(Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
+    public List<InboxResponse> getInbox(Pageable pageable, HttpServletRequest request) {
 
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         User user = userRepository.findByUserId(userIdFromHeader)
-                .orElseThrow(() -> new AccessDeniedException
-                        ("접근 권한이 없습니다. userId = " + userIdFromHeader));
+                .orElseThrow(() -> new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader));
 
         return postsService.findAllByUserId(user.getUserId(), pageable);
     }
@@ -105,12 +104,11 @@ public class PostsApiController {
 
     @GetMapping("/api/gallery/me")
     public List<GalleryResponse> findMyGallery(
-            Pageable pageable, HttpServletRequest request) throws AccessDeniedException {
+            Pageable pageable, HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         User user = userRepository.findByUserId(userIdFromHeader)
-                .orElseThrow(() -> new AccessDeniedException
-                        ("접근 권한이 없습니다. userId = " + userIdFromHeader));
+                .orElseThrow(() -> new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader));
 
         return postsService.findAllByUserIdOpen(user.getUserId(), pageable);
     }
