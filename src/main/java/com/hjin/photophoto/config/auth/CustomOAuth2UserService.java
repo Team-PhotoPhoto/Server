@@ -49,6 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
+        viewService.saveView(user.getUserId());
 
         // 기본 이미지 url 설정
         user.updateImage(user.getUserId());
@@ -76,8 +77,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         // userEntity 저장
-//        System.out.println(">> view insert: \n");
-        viewService.saveView(user.getUserId());
+//        System.out.println(">> view insert: \n" + user.getUserId());
+//        viewService.saveView(user.getUserId());
 //        viewRepository.findByUserId(user.getUserId())
 //                        .orElse(viewService.saveView(user.getUserId()));
         return userRepository.save(user);
