@@ -14,7 +14,7 @@ public class IndexController {
 
     @GetMapping(value =  {"", "/", "/oauth2/redirect", "/signup", "/gallery/{userId}",
             "/profile", "/posts/onboarding", "/posts/write", "/posts/done", "/inbox", "/post/{postId}",
-            "/user/logout", "/user/withdraw", "/error", "/message"})
+            "/user/logout", "/user/withdraw", "/error", "/message/{postId}"})
     public String forward() {
         return "forward:/index.html";
     }

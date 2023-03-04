@@ -1,19 +1,11 @@
 package com.hjin.photophoto.config.auth;
 
-import com.hjin.photophoto.config.auth.dto.MailRequest;
-import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
-import com.hjin.photophoto.web.user.dto.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 
-import org.springframework.mail.javamail.MimeMessageHelper;
-
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 
@@ -43,8 +35,5 @@ public class AuthController {
     }
 
 
-    @PostMapping("/mail")
-    public void sendMail(@RequestBody MailRequest requestDto) {
-        authService.sendMail(requestDto);
-    }
+
 }

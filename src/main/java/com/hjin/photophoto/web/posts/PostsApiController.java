@@ -45,7 +45,13 @@ public class PostsApiController {
         // unreadCount++
         viewService.plus1ViewCount(requestDto.getReceiverUserId());
 
-        return postsService.save(requestDto);
+        // save post
+        postsService.save(requestDto);
+
+        // send email
+        postsService.sendMail(requestDto);
+
+        return requestDto.getPostId();
     }
 
     @PostMapping("/api/post/me")       //@RequestParam: request 파라미터 가져옴
