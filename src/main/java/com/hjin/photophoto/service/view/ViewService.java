@@ -28,7 +28,7 @@ public class ViewService {
                         () -> new MyException(MyExceptionType.NOT_EXIST_USER, userId)
                 );
 
-        Long countReadNot = postsRepository.countByReceiverUserIdAndReadYnNot(userId)
+        Long countReadNot = postsRepository.countByReceiverUserIdAndReadYn(userId, false)
                 .orElseThrow(
                         () -> new MyException(MyExceptionType.NOT_EXIST_USER, userId)
                 );
