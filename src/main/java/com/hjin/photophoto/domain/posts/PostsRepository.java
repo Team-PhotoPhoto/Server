@@ -9,9 +9,10 @@ import java.util.Optional;
 public interface PostsRepository extends JpaRepository<Posts, Long> {
 
 //    Optional<Posts> findByPostId(Long postId);
-    Page<Posts> findPostsByReceiverUserIdAndOpenYnNotOrderByCreatedDateDesc(Long receiverUserId, Pageable pageable);
     Page<Posts> findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(Long receiverUserId, boolean openYn, Pageable pageable);
 
+    //읽지 않은 포스트 확인
+    Optional<Long> countByReceiverUserIdAndReadYnNot(Long receiverUserId);
 }
 
 

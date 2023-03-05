@@ -42,14 +42,15 @@ public class PostsApiController {
 
     @PostMapping("/api/post")       //@RequestParam: request 파라미터 가져옴
     public Long savePost(@RequestBody PostsSaveRequest requestDto) {
-        // unreadCount++
-        viewService.plus1ViewCount(requestDto.getReceiverUserId());
 
         // save post
         postsService.save(requestDto);
 
         // send email
         postsService.sendMail(requestDto);
+
+        // unreadCount++
+        viewService.updateViewCount(requestDto.getReceiverUserId());
 
         return requestDto.getPostId();
     }
@@ -109,7 +110,7 @@ public class PostsApiController {
 
         // unreadCount--
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
-        viewService.minus1ViewCount(userIdFromHeader);
+        viewService.updateViewCount(userIdFromHeader);
 
         return postsService.findByPostId(postId);
     }

@@ -8,4 +8,5 @@ public interface ViewRepository extends JpaRepository<View, Long> {
 
     Optional<View> findByUserId(Long userId);
 
+
 }

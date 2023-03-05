@@ -116,7 +116,7 @@ public class PostsService {
         userRepository.findByUserId(receiverUserId)
                 .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, receiverUserId));
 
-        return postsRepository.findPostsByReceiverUserIdAndOpenYnNotOrderByCreatedDateDesc(receiverUserId, pageable)
+        return postsRepository.findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(receiverUserId, false, pageable)
                 .stream()
                 .map(InboxResponse::new)
                 .collect(Collectors.toList());

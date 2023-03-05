@@ -1,8 +1,11 @@
 package com.hjin.photophoto.service.view;
 
 
+import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.view.View;
 import com.hjin.photophoto.domain.view.ViewRepository;
+import com.hjin.photophoto.exception.MyException;
+import com.hjin.photophoto.exception.MyExceptionType;
 import com.hjin.photophoto.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,27 +18,22 @@ import java.util.Optional;
 public class ViewService {
 
     private final ViewRepository viewRepository;
+    private final PostsRepository postsRepository;
 
 
     @Transactional
-    public void plus1ViewCount(Long userId) {
+    public void updateViewCount(Long userId) {
         View view = viewRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "해당 유저가 없습니다. userId = " + userId
-                ));
+                .orElseThrow(
+                        () -> new MyException(MyExceptionType.NOT_EXIST_USER, userId)
+                );
 
-        view.updateCount(view.getCount() + 1);
+        Long countReadNot = postsRepository.countByReceiverUserIdAndReadYnNot(userId)
+                .orElseThrow(
+                        () -> new MyException(MyExceptionType.NOT_EXIST_USER, userId)
+                );
 
-    }
-
-    @Transactional
-    public void minus1ViewCount(Long userId) {
-        View view = viewRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "해당 유저가 없습니다. userId = " + userId
-                ));
-
-        view.updateCount(view.getCount() - 1);
+        view.updateCount(Math.toIntExact(countReadNot));
 
     }
 
