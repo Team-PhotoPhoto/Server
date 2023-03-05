@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PostsRepository extends JpaRepository<Posts, Long> {
 
 //    Optional<Posts> findByPostId(Long postId);
-    Page<Posts> findPostsByReceiverUserIdOrderByCreatedDateDesc(Long receiverUserId, Pageable pageable);
+    Page<Posts> findPostsByReceiverUserIdAndOpenYnNotOrderByCreatedDateDesc(Long receiverUserId, Pageable pageable);
     Page<Posts> findPostsByReceiverUserIdAndOpenYnOrderByCreatedDateDesc(Long receiverUserId, boolean openYn, Pageable pageable);
 
 }

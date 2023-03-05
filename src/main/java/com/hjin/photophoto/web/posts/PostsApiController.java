@@ -100,7 +100,7 @@ public class PostsApiController {
         User user = userRepository.findByUserId(userIdFromHeader)
                 .orElseThrow(() -> new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader));
 
-        return postsService.findAllByUserId(user.getUserId(), pageable);
+        return postsService.findAllByUserIdClosed(user.getUserId(), pageable);
     }
 
     @GetMapping("/api/inbox/post/{postId}")

@@ -112,11 +112,11 @@ public class PostsService {
 
     // userId로 찾기, inbox
     @Transactional(readOnly = true)     // 조회 기능만 남아 속도 향상
-    public List<InboxResponse> findAllByUserId(Long receiverUserId, Pageable pageable) {
+    public List<InboxResponse> findAllByUserIdClosed(Long receiverUserId, Pageable pageable) {
         userRepository.findByUserId(receiverUserId)
                 .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, receiverUserId));
 
-        return postsRepository.findPostsByReceiverUserIdOrderByCreatedDateDesc(receiverUserId, pageable)
+        return postsRepository.findPostsByReceiverUserIdAndOpenYnNotOrderByCreatedDateDesc(receiverUserId, pageable)
                 .stream()
                 .map(InboxResponse::new)
                 .collect(Collectors.toList());
