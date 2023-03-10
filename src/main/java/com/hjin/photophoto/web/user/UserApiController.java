@@ -61,16 +61,10 @@ public class UserApiController {
         return userService.findByUserId(userId);
     }
 
-    @PutMapping("/api/deleteaccount/{userId}")
-    public void deleteAccount(@PathVariable Long userId, HttpServletRequest request) throws AccessDeniedException {
+    @DeleteMapping("/api/profile/me")
+    public void deleteAccount(HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
-
-        if(!Objects.equals(userId, userIdFromHeader)) {
-            throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
-        }
-        else {
-            userService.updateDeleteByUserId(userId);
-        }
+        userService.updateDeleteByUserId(userIdFromHeader);
     }
 
 }
