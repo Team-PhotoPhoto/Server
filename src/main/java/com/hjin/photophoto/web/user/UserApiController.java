@@ -64,7 +64,7 @@ public class UserApiController {
     @DeleteMapping("/api/profile/me")
     public void deleteAccount(HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
-        userService.updateDeleteByUserId(userIdFromHeader);
+        userService.delete(userIdFromHeader);
     }
 
 }

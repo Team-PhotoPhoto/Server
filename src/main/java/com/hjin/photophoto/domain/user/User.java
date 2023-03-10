@@ -71,9 +71,6 @@ public class User extends BaseTimeEntity {
         this.role = Role.USER;
     }
 
-    public void updateDelete() {
-        this.role = Role.DELETED;
-    }
     public void updateImage(Long userId) {
         this.imageUrl = "https://photophoto-user-img.s3.ap-northeast-2.amazonaws.com/" + userId + ".png";
     }

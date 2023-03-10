@@ -63,11 +63,11 @@ public class UserService {
     }
 
     @Transactional
-    public void updateDeleteByUserId (Long userId) {
+    public void delete (Long userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, userId));
 
-        user.updateDelete();
+        userRepository.delete(user);
     }
 
 }
