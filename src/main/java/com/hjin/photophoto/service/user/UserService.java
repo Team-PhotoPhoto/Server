@@ -1,6 +1,7 @@
 package com.hjin.photophoto.service.user;
 
 import com.amazonaws.HttpMethod;
+import com.hjin.photophoto.domain.posts.PostsRepository;
 import com.hjin.photophoto.domain.user.User;
 import com.hjin.photophoto.domain.user.UserRepository;
 import com.hjin.photophoto.domain.view.View;
@@ -25,6 +26,7 @@ public class UserService {
 
     private final ImageService imageService;
     private final ViewRepository viewRepository;
+    private final PostsRepository postsRepository;
 
 
     @Transactional
@@ -66,6 +68,9 @@ public class UserService {
     public void delete (Long userId) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_USER, userId));
+
+        // 해당 유저가 받은 Post 삭제
+        postsRepository.deletePostsByReceiverUserId(userId);
 
         userRepository.delete(user);
     }

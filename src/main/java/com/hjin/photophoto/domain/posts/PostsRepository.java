@@ -13,6 +13,8 @@ public interface PostsRepository extends JpaRepository<Posts, Long> {
 
     //읽지 않은 포스트 확인
     Optional<Long> countByReceiverUserIdAndReadYn(Long receiverUserId, boolean readYn);
+
+    Long deletePostsByReceiverUserId(Long receiverUserId);
 }
 
 
