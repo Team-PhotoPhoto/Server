@@ -56,14 +56,14 @@ public class PostsApiController {
     }
 
     @PostMapping("/api/post/me")       //@RequestParam: request 파라미터 가져옴
-    public Long saveMyPost(@RequestBody PostsSaveRequest requestDto, HttpServletRequest request) {
+    public Long saveMyPost(@RequestBody PostsSaveMeRequest requestDto, HttpServletRequest request) {
         Long userIdFromHeader = authService.getUserIdFromHeader(request);
 
         // 나->나인가?
         if (!Objects.equals(requestDto.getReceiverUserId(), userIdFromHeader)) {
             throw new MyException(MyExceptionType.NO_PERMISSION, userIdFromHeader);
         } else {
-            return postsService.save(requestDto);
+            return postsService.saveMe(requestDto);
         }
 
     }

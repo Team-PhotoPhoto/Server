@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-public class PostsSaveRequest {
+public class PostsSaveMeRequest {
 
     private final Long postId;
     private final String title;
@@ -20,7 +20,7 @@ public class PostsSaveRequest {
 
 
     @Builder
-    public PostsSaveRequest(Long postId, String title, String comments,
+    public PostsSaveMeRequest(Long postId, String title, String comments,
                             String senderName, Long receiverUserId) {
         this.postId = postId;
         this.title = title;
@@ -29,8 +29,8 @@ public class PostsSaveRequest {
         this.originUrl = "https://photophoto-posts-img.s3.ap-northeast-2.amazonaws.com/origin/" + postId + ".png";
         this.senderName = senderName;
         this.receiverUserId = receiverUserId;
-        this.readYn = false;
-        this.openYn = false;
+        this.readYn = true;
+        this.openYn = true;
     }
 
     public Posts toEntity() {

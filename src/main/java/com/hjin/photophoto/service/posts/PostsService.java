@@ -62,6 +62,18 @@ public class PostsService {
     }
 
     @Transactional
+    public Long saveMe(PostsSaveMeRequest requestDto) {
+        // PostImg 에서 삭제
+        PostsImg postsImg = postsImgRepository.findById(requestDto.getPostId())
+                .orElseThrow(() -> new MyException(MyExceptionType.NOT_EXIST_IMAGE_POST, requestDto.getPostId()));
+
+        postsImgRepository.delete(postsImg);
+
+        return postsRepository.save(requestDto.toEntity())
+                .getPostId();
+    }
+
+    @Transactional
     public Long uploadImage() {
         return postsImgRepository.save(PostsImg.builder().build())
                 .getPostId();
