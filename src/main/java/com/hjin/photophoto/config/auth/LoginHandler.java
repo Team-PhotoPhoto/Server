@@ -69,7 +69,7 @@ public class LoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
         return UriComponentsBuilder.newInstance()
-                .scheme("http")
+                .scheme("https")
                 .host(CLIENT_HOST)
                 .path("/oauth2/redirect")
                 .queryParam("accessToken", accessToken)

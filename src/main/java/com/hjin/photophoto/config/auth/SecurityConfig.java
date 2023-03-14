@@ -57,7 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        String[] array = {"http://www.photophoto.me", "http://photophoto.me", "http://localhost:3000", "http://localhost:8080"};
+        String[] array = {"http://www.photophoto.me", "http://photophoto.me", "http://localhost:3000", "http://localhost:8080",
+                            "https://www.photophoto.me", "https://photophoto.me"};
         List<String> list = List.of(array);
 
         configuration.setAllowedOrigins(list);
